@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { UsuariosService } from 'src/app/sevicios/firestore/usuarios.service';
 
@@ -15,7 +16,7 @@ export class LoginComponent {
     clave: ['', []]
   })
 
-  constructor( public dbusuarios: UsuariosService, public fbuilder: FormBuilder, public authLog: AutenticacionService){ }
+  constructor( public dbusuarios: UsuariosService, public fbuilder: FormBuilder, public authLog: AutenticacionService, public ruter: Router){ }
 
   loguearse(){
     for( let usr of this.dbusuarios.listaElementos ){
@@ -38,7 +39,8 @@ export class LoginComponent {
               this.authLog.login().setAdmin();
               break;
           }
-          console.log(this.authLog);
+          this.authLog.usuario = usr;
+          this.ruter.navigate(['home']);
         } else {
           return
         }

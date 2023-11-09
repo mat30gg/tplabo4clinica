@@ -1,6 +1,8 @@
 <nav>
     <a routerLink="/home">Home</a>
-    PEPITO
+    <span *ngIf="this.authlog.usuario">
+        {{this.authlog.usuario.nombre + ' ' + this.authlog.usuario.apellido}}
+    </span>
     <a routerLink="/login">Login</a>
     <a routerLink="/registro">Registro</a>
     <a routerLink="/usuarios" *ngIf="this.rolUsuario == 'admin'">Usuarios</a>

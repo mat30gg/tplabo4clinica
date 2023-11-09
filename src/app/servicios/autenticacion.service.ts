@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class AutenticacionService {
   public logueado:boolean = false;
   public rol:string = '';
+  public usuario:any;
 
   constructor() { }
 

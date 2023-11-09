@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Usuario } from 'src/app/clases/entidades/usuario';
+import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 
 @Component({
   selector: 'app-navbarcomp',
@@ -8,4 +9,6 @@ import { Usuario } from 'src/app/clases/entidades/usuario';
 })
 export class NavbarcompComponent {
   @Input() rolUsuario = '';
+
+  constructor(public authlog: AutenticacionService){ }
 }
