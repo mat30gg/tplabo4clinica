@@ -1,0 +1,8 @@
+.entrada-archivo{
+    display: none;
+}
+
+.oculto{
+    display: none;
+    z-index: -100;
+}

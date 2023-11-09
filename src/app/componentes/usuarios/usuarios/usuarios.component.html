@@ -1,0 +1,8 @@
+<ul>
+    <li *ngFor="let doctor of this.especialistas">
+        <button type="button" (click)="AlternarHabilitado(doctor)" [ngClass]="doctor.aprobado?'habilitado':'inhabilitado'">
+            {{doctor.nombre + ' ' + doctor.apellido}}
+        </button>
+    </li>
+    <app-registro [menuAdmin]="true"></app-registro>
+</ul>

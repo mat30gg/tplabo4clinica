@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "tp-clinica-ce784"
+  },
+  "targets": {
+    "tp-clinica-ce784": {
+      "hosting": {
+        "tp-clinica": [
+          "tp-clinica-ce784"
+        ]
+      }
+    }
+  }
+}

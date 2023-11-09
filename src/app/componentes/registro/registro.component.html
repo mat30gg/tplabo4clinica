@@ -1,0 +1,91 @@
+
+<form [formGroup]="formRegistro">
+    <div>
+        <label>
+            Nombre
+            <input type="text" formControlName="nombre">
+        </label>
+        <label>
+            Apellido
+            <input type="text" formControlName="apellido">
+        </label>
+
+    </div>
+    <div>
+        <label>
+            Edad
+            <input type="number" formControlName="edad">
+        </label>
+        <label>
+            Documento
+            <input type="number" formControlName="dni">
+        </label>
+
+    </div>
+    <div>
+        <label>
+            Correo electronico
+            <input type="text" formControlName="email">
+        </label>
+
+    </div>
+    <div>
+        <label>
+            Clave
+            <input type="password" formControlName="clave">
+        </label>
+        <label>
+            Confirmar clave
+            <input type="password" formControlName="confirmacionClave">
+        </label>
+    </div>
+    <div>
+        <label>
+            Tipo de usuario
+            <form [formGroup]="fTipousuario">
+                <label>
+                    <input type="radio" formControlName="tipo" value="paciente">
+                    Paciente
+                </label>
+                <label>
+                    <input type="radio" formControlName="tipo" value="especialista">
+                    Especialista
+                </label>
+                <label [ngClass]="!menuAdmin?'oculto':''">
+                    <input type="radio" formControlName="tipo" value="admin" >
+                    Admin
+                </label>
+            </form>
+        </label>
+    </div>
+    <div>
+        <div [ngSwitch]="this.fTipousuario.controls['tipo'].value">
+            <div *ngSwitchCase="'paciente'">
+                <label>
+                    Obra social
+                    <input type="text" formControlName="obraSocial"/>
+                </label>
+            </div>
+            <div *ngSwitchCase="'especialista'">
+                <select formControlName="especialidad" >
+                    <option selected disabled hidden value="">Seleccionar especialidad</option>
+                    <option *ngFor="let esp of especialidades" [ngValue]="esp | lowercase">
+                        {{esp | normalizar}}
+                    </option>
+                </select>
+            </div>
+            <div *ngSwitchDefault></div>
+        </div>
+
+    </div>
+    <div>
+        <label>
+            Imagen de perfil
+            <input type="file" accept="image/png image/jpeg" class="entrada-archivo" (change)="subioArchivo(subidaImagen)" #subidaImagen>
+            <button type="button" (click)="subidaImagen.click()">Agregar imagen de perfil</button>
+        </label>
+    </div>
+</form>
+<button type="button" (click)="RegistrarUsuario()" [disabled]="!this.formRegistro.valid ">Registrarse</button>
+<button type="button" (click)="botonPrueba()">Prueba</button>
+<button type="button" (click)="botonPrueba2()">Prueba2</button>

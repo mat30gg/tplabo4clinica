@@ -1,0 +1,9 @@
+<h1>LOGIN</h1>
+<form [formGroup]="formLogin">
+    <input type="text" formControlName="email" placeholder="Email">
+    <input type="text" formControlName="clave" placeholder="Clave">
+</form>
+<button type="button" (click)="clickUsuario1()">Especialista</button>
+<button type="button" (click)="clickUsuario2()">Paciente</button>
+<button type="button" (click)="clickUsuario3()">Admin</button>
+<button type="button" (click)="loguearse()">Log-in</button>
