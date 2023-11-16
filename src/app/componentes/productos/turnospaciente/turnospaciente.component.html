@@ -1,0 +1,39 @@
+<div>
+    <form class="row " [formGroup]="filtros" >
+        <div class="col-auto m-1 p-1 g-1">
+            <input class="form-control" type="text" list="especialidadesOptions" placeholder="Especialidad" formControlName="especialidad" >
+            <datalist  id="especialidadesOptions">
+                <option *ngFor="let esp of especialidadesServ.especialidades" value="{{esp}}">
+            </datalist>
+        </div>
+        <div class="col-auto m-1 p-1 g-1">
+            <input class="form-control" type="text" placeholder="Especialista" formControlName="especialista" >
+        </div>
+        <div class="col-auto p-2 m-2">
+            <i class="bi bi-funnel"></i>
+        </div>
+    </form>
+    <div class="row ">
+        <div class="col ">
+            <h1>PENDIENTES</h1>
+            <div *ngFor="let turno of filtrarEstado('pendiente')" >
+                Turno: {{(turno.especialidadTurno | barrasivacio) +' '+(turno.especialistaTurno | barrasivacio)+' ('+(getdate(turno.fechaTurno) | barrasivacio:true | date:'M/d/yy, h:mm a' )+')'}}
+                <div class="btn-group">
+                    <button class="btn btn-danger ">Cancelar</button>
+                    <button class="btn btn-info " [hidden]="!turno.comentarios">Ver comentarios</button>
+                </div>
+            </div>
+        </div>
+        <div class="col ">
+            <H1>FINALIZADOS</H1>
+            <div *ngFor="let turno of filtrarEstado('finalizado')" >
+                Turno: {{(turno.especialidadTurno | barrasivacio) +' '+(turno.especialistaTurno | barrasivacio)+' ('+(getdate(turno.fechaTurno) | barrasivacio:true | date:'M/d/yy, h:mm a' )+')'}}
+                <button class="btn btn-info " [hidden]="!turno.comentarios">Ver comentarios</button>
+                <button class="btn btn-info " [hidden]="!turno.comentarios">Completar encuesta</button>
+                <button class="btn btn-info " >Calificar atencion</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>

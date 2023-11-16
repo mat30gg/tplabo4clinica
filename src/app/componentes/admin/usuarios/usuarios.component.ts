@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { collectionChanges, collectionData } from '@angular/fire/firestore';
-import { UsuariosService } from 'src/app/sevicios/firestore/usuarios.service';
+import { UsuariosService } from 'src/app/servicios/firestore/usuarios.service';
 
 @Component({
   selector: 'app-usuarios',

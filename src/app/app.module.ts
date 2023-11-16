@@ -13,7 +13,18 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage} from '@angular/fire/storage'
 import { NormalizarPipe } from './pipes/decorador/normalizar.pipe';
 import { ClaseStorage } from './clases/firestorage/clase-storage';
-import { UsuariosComponent } from './componentes/usuarios/usuarios/usuarios.component';
+import { UsuariosComponent } from './componentes/admin/usuarios/usuarios.component';
+import { BotonesLoginComponent } from './componentes/dev/botones-login/botones-login.component';
+import { MisturnosComponent } from './componentes/productos/misturnos/misturnos.component';
+import { AutocompletartextoDirective } from './directivas/inputs/autocompletartexto.directive';
+import { BarrasivacioPipe } from './pipes/validos/barrasivacio.pipe';
+import { TurnospacienteComponent } from './componentes/productos/turnospaciente/turnospaciente.component';
+import { TurnosespecialistaComponent } from './componentes/productos/turnosespecialista/turnosespecialista.component';
+import { PacientePipe } from './pipes/transformacion/paciente.pipe';
+import { EstadoTurnoDirective } from './directivas/decorado/estado-turno.directive';
+import { TurnosComponent } from './componentes/admin/turnos/turnos.component';
+import { CargaturnoComponent } from './componentes/productos/cargaturno/cargaturno.component';
+import { MiperfilComponent } from './componentes/visual/miperfil/miperfil.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +34,18 @@ import { UsuariosComponent } from './componentes/usuarios/usuarios/usuarios.comp
     LoginComponent,
     RegistroComponent,
     NormalizarPipe,
-    UsuariosComponent
+    UsuariosComponent,
+    BotonesLoginComponent,
+    MisturnosComponent,
+    AutocompletartextoDirective,
+    BarrasivacioPipe,
+    TurnospacienteComponent,
+    TurnosespecialistaComponent,
+    PacientePipe,
+    EstadoTurnoDirective,
+    TurnosComponent,
+    CargaturnoComponent,
+    MiperfilComponent
   ],
   imports: [
     BrowserModule,

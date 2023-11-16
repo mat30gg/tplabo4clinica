@@ -1,0 +1,52 @@
+<form [formGroup]="formTurno">
+
+    <div class="row ">
+        <div class="col ">
+            <label class="form-label ">Especialidad</label>
+            <input class="form-control " type="text" list="especialidadesOptions" formControlName="especialidadTurno">
+            <datalist  id="especialidadesOptions">
+                <option *ngFor="let esp of especialidadesServ.especialidades" value="{{esp}}">
+            </datalist>
+        </div>
+        <div class="col">
+            <label class="form-label">Especialista</label>
+            <input class="form-control" type="text" formControlName="especialistaTurno">
+        </div>
+    </div>
+    <div>
+
+        <div>
+
+            <div class="row ">
+                
+                <label class="form-label">Fecha</label>
+                <input class="form-control" type="text" [readOnly]="true" formControlName="horarioTurno">
+
+            </div>
+            <div class="row">
+
+                <div class="col-auto ">
+                    <button class="btn btn-dark" type="button" (click)="bajarCarrusel()"><</button>
+                </div>
+                <div class="col " *ngFor="let dia of proximosXVdias | slice:this.carruselFechaMinimo:this.carruselFechaMaximo; let i=index">
+
+                    <div class="card "  (mouseleave)="contraerHorarios(dia, i)">
+                        <div class="card-title " (mouseenter)="desplegarHorarios(dia, i)">{{dia | date:'d/M/yy'}}</div>
+                        <div class=" d-none "  #textoBoton>
+                            <div *ngFor="let horario of obtenerHorarios(dia)" ><button class="btn" (click)="establecerDia(horario)">{{horario | date:'h:mm a'}}</button></div>
+                            
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-auto ">
+                    <button class="btn btn-dark" type="button" (click)="subirCarrusel()">></button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <button class="btn btn-info" type="button" (click)="pedirTurno()">Pedir turno</button>
+</form>

@@ -1,9 +1,23 @@
 <h1>LOGIN</h1>
-<form [formGroup]="formLogin">
-    <input type="text" formControlName="email" placeholder="Email">
-    <input type="text" formControlName="clave" placeholder="Clave">
-</form>
-<button type="button" (click)="clickUsuario1()">Especialista</button>
-<button type="button" (click)="clickUsuario2()">Paciente</button>
-<button type="button" (click)="clickUsuario3()">Admin</button>
-<button type="button" (click)="loguearse()">Log-in</button>
+<div class="d-flex align-items-center justify-content-center">
+    <div class="border border-3 border-primary-subtle p-3">
+        <form [formGroup]="formLogin">
+            <div class="mb-3 ">
+                <label class="form-label ">
+                    Email
+                    <input type="text" formControlName="email" class="form-control ">
+                </label>
+            </div>
+            <div>
+                <label class="form-label ">
+                    Clave
+                    <input type="password" formControlName="clave" class="form-control ">
+                </label>
+            </div>
+            <button type="button" class="btn btn-primary " (click)="loguearse()">Log-in</button>
+        </form>
+
+    </div>
+
+</div>
+<app-botones-login (clickUsuarioEvent)="devClickUsuario($event)"></app-botones-login>

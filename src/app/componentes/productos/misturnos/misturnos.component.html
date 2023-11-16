@@ -1,0 +1,6 @@
+<div *ngIf="this.usrAutenticado.rol == 'paciente'">
+    <app-turnospaciente/>
+</div>
+<div *ngIf="this.usrAutenticado.rol == 'especialista'">
+    <app-turnosespecialista/>
+</div>

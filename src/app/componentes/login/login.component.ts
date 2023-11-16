@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
-import { UsuariosService } from 'src/app/sevicios/firestore/usuarios.service';
+import { UsuariosService } from 'src/app/servicios/firestore/usuarios.service';
 
 @Component({
   selector: 'app-login',
@@ -48,22 +48,7 @@ export class LoginComponent {
     }
   }
 
-  clickUsuario1(){
-    this.formLogin.setValue({
-      email: 'johngus@gmail.com',
-      clave: 'eldoctor23'
-    })
-  }
-  clickUsuario2(){
-    this.formLogin.setValue({
-      email: 'rigomartin@gmail.com',
-      clave: 'misalud23'
-    })
-  }
-  clickUsuario3(){
-    this.formLogin.setValue({
-      email: 'admin@gmail.com',
-      clave: 'admin'
-    })
+  devClickUsuario(usuario: any){
+    this.formLogin.setValue(usuario);
   }
 }

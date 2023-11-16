@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -16,8 +16,9 @@ import { Usuario } from 'src/app/clases/entidades/usuario';
 import { ClaseStorage } from 'src/app/clases/firestorage/clase-storage';
 import { ClaveValidaciones } from 'src/app/clases/validaciones/clave-validaciones';
 import { MisValidaciones } from 'src/app/clases/validaciones/mis-validaciones';
+import { EspecialidadesService } from 'src/app/servicios/datos/especialidades.service';
 
-import { UsuariosService } from 'src/app/sevicios/firestore/usuarios.service';
+import { UsuariosService } from 'src/app/servicios/firestore/usuarios.service';
 
 
 @Component({
@@ -28,7 +29,6 @@ import { UsuariosService } from 'src/app/sevicios/firestore/usuarios.service';
 export class RegistroComponent {
   usuario: any;
   tipoUsuario = '';
-  especialidades: Array<string> = ['cardiologia', 'cirugia', 'dermatologia', 'clinica medica', 'endocrinologia', 'gastroenterologia', 'geriatria', 'ginecologia', 'hematologia', 'pediatria', 'infectologia', 'medicina nuclear', 'neurologia', 'oftalmologia', 'psicologia']
   @Input() menuAdmin: boolean = false;
 
   fTipousuario = this.fbuilder.group({
@@ -78,7 +78,8 @@ export class RegistroComponent {
   constructor(
     public dbusuarios: UsuariosService,
     public fbuilder: FormBuilder,
-    public guardadoImagenes: ClaseStorage
+    public guardadoImagenes: ClaseStorage,
+    public especialidadesService: EspecialidadesService
   ) {
 
     this.fTipousuario.controls.tipo.valueChanges.subscribe(r => {
@@ -104,12 +105,14 @@ export class RegistroComponent {
         this.usuario = new Usuario(this.formRegistro.value);
         this.usuario.tipoUsuario = 'admin'
       }
-      this.dbusuarios.guardar(Object.assign({}, this.usuario));
+      this.dbusuarios.guardar(Object.assign({}, this.usuario), 'usuarios');
     }
     this.formRegistro.controls['confirmacionClave'].enable();
   }
 
-
+  test(){
+    console.log(this.fTipousuario.controls['tipo'])
+  }
 
   botonPrueba() {
     this.fTipousuario.controls.tipo.setValue('paciente');

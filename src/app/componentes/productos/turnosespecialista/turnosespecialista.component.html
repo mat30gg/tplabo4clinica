@@ -1,0 +1,33 @@
+<div>
+    <form class="row " [formGroup]="filtros" >
+        <div class="col-auto m-1 p-1 g-1">
+            <input class="form-control" type="text" list="especialidadesOptions" placeholder="Especialidad" formControlName="especialidad" >
+            <datalist  id="especialidadesOptions">
+                <option *ngFor="let esp of especialidadesServ.especialidades" value="{{esp}}">
+            </datalist>
+        </div>
+        <div class="col-auto m-1 p-1 g-1">
+            <input class="form-control" type="text" placeholder="Paciente" formControlName="paciente" >
+        </div>
+        <div class="col-auto p-2 m-2">
+            <i class="bi bi-funnel"></i>
+        </div>
+    </form>
+    <div class="row ">
+        <div class="col ">
+            <h1>PENDIENTES</h1>
+            <div *ngFor="let turno of filtrarLista()" >
+                <div>
+                    Turno: {{(turno.especialidadTurno | barrasivacio) +' '+(turno.pacienteTurno | nombreapellido | barrasivacio)+' ('+(getdate(turno.fechaTurno) | barrasivacio:true | date:'M/d/yy, h:mm a' )+') '}} <p class="h5 d-inline">{{turno.estado}}</p>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-danger " [hidden]="!(turno.estado=='pendiente')">Cancelar turno</button>
+                    <button class="btn btn-danger " [hidden]="!(turno.estado=='pendiente')">Rechazar turno</button>
+                    <button class="btn btn-success " [hidden]="!(turno.estado=='pendiente')">Aceptar turno</button>
+                    <button class="btn btn-info " [hidden]="!(turno.estado=='aceptado')">Finalizar turno</button>
+                    <button class="btn btn-info " [hidden]="!turno.comentarios">Ver comentarios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

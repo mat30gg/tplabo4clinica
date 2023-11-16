@@ -1,2 +1,8 @@
-<app-navbarcomp [rolUsuario]="this.servusr.rol"></app-navbarcomp>
-<router-outlet></router-outlet>
+<div class="overflow-hidden vh-100">
+    <div>
+        <app-navbarcomp [rolUsuario]="this.servusr.rol"></app-navbarcomp>
+    </div>
+    <div>
+        <router-outlet></router-outlet>
+    </div>
+</div>

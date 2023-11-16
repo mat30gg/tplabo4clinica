@@ -1,9 +1,24 @@
-<nav>
-    <a routerLink="/home">Home</a>
-    <span *ngIf="this.authlog.usuario">
-        {{this.authlog.usuario.nombre + ' ' + this.authlog.usuario.apellido}}
-    </span>
-    <a routerLink="/login">Login</a>
-    <a routerLink="/registro">Registro</a>
-    <a routerLink="/usuarios" *ngIf="this.rolUsuario == 'admin'">Usuarios</a>
+<nav class="sticky-top navbar navbar-expand py-1">
+    <div class="container d-flex flex-column flex-md-row justify-content-between">
+        <a class="navbar-brand py-2" routerLink="/home"><i class="bi bi-house-fill"></i></a>
+        <div class="" *ngIf="!this.authlog.logueado; else bloqueUsuarioYaLogueado">
+            <div class="m-2 btn-group ">
+                <a class="btn " routerLink="/login">Iniciar sesion</a>
+                <a class="btn " routerLink="/registro">Registro</a>
+            </div>
+        </div>
+        <ng-template #bloqueUsuarioYaLogueado>
+            <a class="py-2 m-2 d-inline-block btn " routerLink="/miperfil">Mi perfil</a>
+            <a class="py-2 m-2 d-inline-block btn " routerLink="/misturnos">Mis turnos</a>
+            <a class="py-2 m-2 d-inline-block btn " routerLink="/solicitarturno">Pedir turno</a>
+            <a class="py-2 m-2 d-inline-block btn " routerLink="/usuarios" *ngIf="this.rolUsuario == 'admin'">Usuarios</a>
+            <a class="py-2 m-2 d-inline-block btn " routerLink="/turnos" *ngIf="this.rolUsuario == 'admin'">Turnos</a>
+            <div>
+                <span class="py-2 m-2 d-inline-block" *ngIf="this.authlog.usuario">
+                    {{this.authlog.usuario.nombre + ' ' + this.authlog.usuario.apellido}}
+                </span>
+                <a class="py-2 m-2 d-inline-block" routerLink="#">Cerrar sesion</a>
+            </div>
+        </ng-template>
+    </div>
 </nav>
