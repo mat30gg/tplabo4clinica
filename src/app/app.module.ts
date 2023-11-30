@@ -25,6 +25,18 @@ import { EstadoTurnoDirective } from './directivas/decorado/estado-turno.directi
 import { TurnosComponent } from './componentes/admin/turnos/turnos.component';
 import { CargaturnoComponent } from './componentes/productos/cargaturno/cargaturno.component';
 import { MiperfilComponent } from './componentes/visual/miperfil/miperfil.component';
+import { TablapaisesComponent } from './formularios/tablapaises/tablapaises.component';
+import { PedirturnoComponent } from './componentes/visual/pedirturno/pedirturno.component';
+import { SeleccionarEspecialistaComponent } from './componentes/controles/seleccionar-especialista/seleccionar-especialista.component';
+import { SeleccionarEspecialidadComponent } from './componentes/controles/seleccionar-especialidad/seleccionar-especialidad.component';
+import { BotonUtilComponent } from './componentes/controles/boton-util/boton-util.component';
+import { ListadoUtilComponent } from './componentes/controles/listado-util/listado-util.component';
+import { FiltroturnosComponent } from './componentes/controles/filtroturnos/filtroturnos.component';
+import { VistaturnopacienteComponent } from './componentes/productos/misturnos/vistaturnopaciente/vistaturnopaciente.component';
+import { VistaturnomedicoComponent } from './componentes/productos/misturnos/vistaturnomedico/vistaturnomedico.component';
+import { EncuestapacienteComponent } from './componentes/productos/encuestapaciente/encuestapaciente.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [
@@ -45,7 +57,17 @@ import { MiperfilComponent } from './componentes/visual/miperfil/miperfil.compon
     EstadoTurnoDirective,
     TurnosComponent,
     CargaturnoComponent,
-    MiperfilComponent
+    MiperfilComponent,
+    TablapaisesComponent,
+    PedirturnoComponent,
+    SeleccionarEspecialistaComponent,
+    SeleccionarEspecialidadComponent,
+    BotonUtilComponent,
+    ListadoUtilComponent,
+    FiltroturnosComponent,
+    VistaturnopacienteComponent,
+    VistaturnomedicoComponent,
+    EncuestapacienteComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +76,9 @@ import { MiperfilComponent } from './componentes/visual/miperfil/miperfil.compon
     ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp({"projectId":"tp-clinica-ce784","appId":"1:69946792691:web:5bcf2a05ad4b46ef727586","storageBucket":"tp-clinica-ce784.appspot.com","apiKey":"AIzaSyCAz7HkPbZlPD5pjdf9nMQoYjih7SWcaec","authDomain":"tp-clinica-ce784.firebaseapp.com","messagingSenderId":"69946792691"})),
     provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()),
+    NgbModule,
+    RecaptchaModule
   ],
   providers: [ClaseStorage],
   bootstrap: [AppComponent]

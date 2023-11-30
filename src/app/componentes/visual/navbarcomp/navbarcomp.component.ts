@@ -11,4 +11,8 @@ export class NavbarcompComponent {
   @Input() rolUsuario = '';
 
   constructor(public authlog: AutenticacionService){ }
+
+  cerrarSesion(){
+    this.authlog.logout();
+  }
 }

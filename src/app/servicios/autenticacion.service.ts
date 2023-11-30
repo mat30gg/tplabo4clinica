@@ -1,23 +1,27 @@
 import { Injectable } from '@angular/core';
+import { Usuario } from '../clases/entidades/usuario';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AutenticacionService {
   public logueado:boolean = false;
-  public rol:string = 'paciente'; // <- Borrar
-  public usuario:any = {email: 'rigomartin@gmail.com'}; // <- Borrar
+  public rol:string;
+  public usuario:any;
 
   constructor() { }
 
-  public login(){
+  public login( usr: Usuario){
     this.logueado = true;
-    
+    this.usuario = usr;
+    this.rol = usr.tipoUsuario;
     return this;
   }
 
   public logout(){
+    this.rol = "";
     this.logueado = false;
+    this.usuario = null;
     return this;
   }
 
@@ -31,9 +35,5 @@ export class AutenticacionService {
 
   public setPaciente(){
     if(this.logueado) this.rol = 'paciente';
-  }
-
-  public setPlebeyo(){
-    if(this.logueado) this.rol = 'plebeyo';
   }
 }

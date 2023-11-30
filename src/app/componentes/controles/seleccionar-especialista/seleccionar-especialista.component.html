@@ -1,0 +1,9 @@
+<div class="container ">
+    <div class="row row-cols-6 ">
+        <div class="col " *ngFor="let esp of this.dbespecialistas.listadoEspecialistas">
+            <boton-util [elementoUtil]="esp" (clickBoton)="enClickEspecialista($event)">
+                {{esp['datos'].nombre+' '+esp['datos'].apellido}}
+            </boton-util>
+        </div>
+    </div>
+</div>

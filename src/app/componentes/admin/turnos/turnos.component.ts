@@ -30,11 +30,6 @@ export class TurnosComponent {
     especialista: ['', []]
   })
 
-
-  testeo(val: any){
-    console.log(val);
-  }
-
   filtrarLista(){
     this.listadoTurnos = this.turnosFs.listadoTurnos;
 

@@ -1,30 +1,30 @@
 
-<div class="vh-100" style="background-color: cyan;">
+<div class="vh-100 overflow-scroll" style="background-color: cyan;">
     <ng-template class="" #bloqueSeleccionTipo>
 
         <div class="z-1">
             <div class="container px-4">
 
             
-                <form [formGroup]="fTipousuario" id="input-tipousuario" >
+                <form [formGroup]="this.formRegistro" id="input-tipousuario" >
                     <div class="row ">
                         <div class="col-auto mx-auto ">
     
-                            <button class="btn rounded-circle " type="button" (click)="fTipousuario.get('tipo')?.setValue('paciente')">
+                            <button class="btn rounded-circle " type="button" (click)="formRegistro.get('tipoUsuario')?.setValue('paciente')">
                                 <img class="img-fluid rounded-circle" width="350px" src="assets/pacienteimagenregistro.jpg" />
                             </button>
     
                         </div>
                         <div class="col-auto mx-auto">
     
-                            <button class="btn rounded-circle " type="button" (click)="fTipousuario.get('tipo')?.setValue('especialista')">
+                            <button class="btn rounded-circle " type="button" (click)="formRegistro.get('tipoUsuario')?.setValue('especialista')">
                                 <img class="img-fluid rounded-circle" width="350px" src="assets/especialistaimagenregistro.jpg" />
                             </button>
                             
                         </div>
                         <div class="col-auto mx-auto" [ngClass]="!menuAdmin?'d-none':''">
     
-                            <button class="btn rounded-circle " type="button" (click)="fTipousuario.get('tipo')?.setValue('admin')">
+                            <button class="btn rounded-circle " type="button" (click)="formRegistro.get('tipoUsuario')?.setValue('admin')">
                                 <img class="img-fluid rounded-circle" width="350px" src="assets/adminimagenregistro.jpg"/>
                             </button>
     
@@ -35,7 +35,7 @@
             </div>
         </div>
     </ng-template>
-    <div class="z-0" *ngIf="this.fTipousuario.controls['tipo'].value; else bloqueSeleccionTipo" >
+    <div class="z-0" *ngIf="this.formRegistro.controls['tipoUsuario'].value; else bloqueSeleccionTipo" >
         <div class="container ">
             <!-- d-flex align-items-center justify-content-center -->
             <div class="row justify-content-center">
@@ -81,19 +81,23 @@
                                 formControlName="confirmacionClave">
                         </div>
                         <div class="row mb-2">
-                            <div [ngSwitch]="this.fTipousuario.controls['tipo'].value">
+                            <div [ngSwitch]="this.formRegistro.controls['tipoUsuario'].value">
                                 <div *ngSwitchCase="'paciente'" class="form-floating">
                                     <input class="form-control" id="inpObraSocial" type="text" placeholder="0"
                                         formControlName="obraSocial" />
                                     <label for="inpObraSocial">Obra social</label>
                                 </div>
                                 <div *ngSwitchCase="'especialista'">
-                                    <select class="form-select" formControlName="especialidad">
-                                        <option selected disabled hidden value="">Seleccionar especialidad</option>
-                                        <option *ngFor="let esp of this.especialidadesService.especialidades" [ngValue]="esp | lowercase">
-                                            {{esp | normalizar}}
-                                        </option>
-                                    </select>
+                                    <label for="inpEspecialidades">Especialidades</label>
+                                    <div formArrayName="especialidades" id="inpEspecialidades" *ngFor="let controlEspecialidad of getControlesEspecialidades()">
+                                        <select class="form-select my-1" [formControl]="$any(controlEspecialidad)" >
+                                            <option selected disabled hidden value="">Seleccionar especialidad</option>
+                                            <option *ngFor="let esp of this.especialidadesService.lista" [ngValue]="esp | lowercase">
+                                                {{esp | normalizar}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-outline-dark my-2" (click)="addControlEspecialidad()">[+]</button>
                                 </div>
                                 <div *ngSwitchDefault></div>
                             </div>
@@ -108,6 +112,7 @@
                             </label>
                         </div>
                     </form>
+                    <re-captcha (resolved)="test()" siteKey="6Ld8YyEpAAAAADCYK07UFENV18vxPLcqX7vvRtzM"></re-captcha>
                     <button type="button" class="btn btn-primary" (click)="RegistrarUsuario()"
                         [disabled]="!this.formRegistro.valid ">Registrarse</button>
                 </div>
@@ -115,5 +120,6 @@
         </div>
     </div>
 </div>
+
 <!-- <button type="button" class="btn btn-secondary" (click)="botonPrueba()">Prueba</button>
 <button type="button" class="btn btn-secondary" (click)="botonPrueba2()">Prueba2</button> -->

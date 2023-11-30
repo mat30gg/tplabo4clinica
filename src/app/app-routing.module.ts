@@ -10,6 +10,7 @@ import { MisturnosComponent } from './componentes/productos/misturnos/misturnos.
 import { TurnosComponent } from './componentes/admin/turnos/turnos.component';
 import { CargaturnoComponent } from './componentes/productos/cargaturno/cargaturno.component';
 import { MiperfilComponent } from './componentes/visual/miperfil/miperfil.component';
+import { PedirturnoComponent } from './componentes/visual/pedirturno/pedirturno.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -18,10 +19,10 @@ export const routes: Routes = [
   {path: 'registro', component: RegistroComponent},
   {path: 'usuarios', component: UsuariosComponent, canActivate: [logueadoGuard], data: {rolEsperado: 'admin'}},
   {path: 'misturnos', component: MisturnosComponent, canActivate: [logueadoGuard]},
-  {path: 'turnos', component: TurnosComponent, canActivate: [logueadoGuard], data: {rolEsperado: 'admin'}},
-  {path: 'solicitarturno', component: CargaturnoComponent, canActivate: []},
+  {path: 'turnos', component: MisturnosComponent, canActivate: [logueadoGuard], data: {rolEsperado: 'admin'}},
+  {path: 'solicitarturno', component: PedirturnoComponent, canActivate: [logueadoGuard]},
   {path: 'miperfil', component: MiperfilComponent, canActivate: [logueadoGuard]},
-  {path: '**', redirectTo: '/home' }
+  {path: '**', redirectTo: 'home' }
 ]
 
 @NgModule({

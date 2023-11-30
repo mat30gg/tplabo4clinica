@@ -6,3 +6,9 @@
 * Registro de usuarios
 - Al ingresar a la página solo se deben ver 2 imágenes que represente a un paciente o especialista, según esa elección mostrará un formulario correspondiente.
 - Estas imágenes deben estar en botones redondos."
+
+* Sacar un turno
+- Comienza mostrando los profesionales, en botones redondos, con la imagen del mismo y su nombre arriba del boton.
+- Una vez seleccionado mostrará las especialidades, en botones cuadrados con bordes redondeados, con la imagen de la especialidad. En caso de no tener muestra imagen por default.
+- Una vez seleccionada la especialidad, aparecerán los dias con turnos disponibles para ese profesional. Esos botones deben ser rectangulares. Formato (2021-09-09)
+- Seleccionado el dia mostrara los horarios disponibles. Estos botones deben ser cuadrados con bordes redondeados. Formato 13:15

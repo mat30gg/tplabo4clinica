@@ -17,7 +17,7 @@
                 <span class="py-2 m-2 d-inline-block" *ngIf="this.authlog.usuario">
                     {{this.authlog.usuario.nombre + ' ' + this.authlog.usuario.apellido}}
                 </span>
-                <a class="py-2 m-2 d-inline-block" routerLink="#">Cerrar sesion</a>
+                <a class="py-2 m-2 d-inline-block" routerLink="#" (click)="cerrarSesion()">Cerrar sesion</a>
             </div>
         </ng-template>
     </div>

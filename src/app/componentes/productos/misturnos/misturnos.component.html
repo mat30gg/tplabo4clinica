@@ -1,6 +1,65 @@
-<div *ngIf="this.usrAutenticado.rol == 'paciente'">
+<div>
+    <ng-container >
+        <div [class.d-none]="this.ocultarEncuesta" class="z-1 position-fixed fondo-oscuro m-0 h-100 w-100 row">
+            <div class="my-auto bg-body ">
+                <app-encuestapaciente (envioEncuesta)="enEnvioEncuesta($event)"></app-encuestapaciente>
+            </div>
+        </div>
+    </ng-container>
+    <app-filtroturnos [listadoTurnos]="this.listadoTurnos" [modoEspecialista]="this.usrauth.rol == 'especialista'" (evCambioFiltros)="enCambioFiltros($event)"></app-filtroturnos>
+    
+    <div class="row ">
+        <div class="col z-0">
+            <h1>TURNOS</h1>
+            <div class="border border-2" *ngFor="let turno of this.listadoMostrar" >
+                
+                <ng-container [ngSwitch]="usrauth.rol">
+                    <ng-container *ngSwitchCase="'paciente'">
+                        <app-vistaturnopaciente [turno]="turno"></app-vistaturnopaciente>
+                        <div class="btn-group">
+                            <button class="btn btn-danger " [hidden]="turno.estado == 'realizado'" [disabled]="turno.estado == 'cancelado'" (click)="enClickCancelar(turno)">Cancelar</button>
+                            <button class="btn btn-info " [hidden]="!turno.comentarios" (click)="enClickVerResenia(turno)">Ver reseña</button>
+                            <button class="btn btn-info" [hidden]="turno.estado != 'finalizado' || !turno.comentarios" (click)="enClickCompletarEncuesta(turno)">Completar encuesta</button>
+                            <button class="btn btn-info" [hidden]="turno.estado != 'finalizado'" (click)="enClickCalificarAtencion(turno)">Calificar atencion</button>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'especialista'">
+                        <app-vistaturnomedico [turno]="turno"></app-vistaturnomedico>
+                        <button class="btn btn-danger " [hidden]="turno.estado != 'pendiente'" [disabled]="turno.estado == 'cancelado'" (click)="enClickCancelar(turno)">Cancelar</button>
+                        <button class="btn btn-danger " [hidden]="turno.estado != 'pendiente'" [disabled]="turno.estado == 'rechazado'" (click)="enClickRechazarTurno(turno)">Rechazar</button>
+                        <button class="btn btn-light " [hidden]="turno.estado != 'pendiente'" [disabled]="turno.estado == 'aceptado'" (click)="enClickAceptarTurno(turno)">Aceptar</button>
+                        <button class="btn btn-dark  " [hidden]="turno.estado != 'aceptado' || turno.encuestarealizada" [disabled]="turno.estado == 'finalizado'" (click)="enClickFinalizarTurno(turno)">Finalizar</button>
+                        <button class="btn btn-info " [hidden]="!turno.comentarios" [disabled]="turno.estado == 'cancelado'" (click)="enClickVerResenia(turno)">Ver resena</button>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'admin'">
+                        <app-vistaturnopaciente [turno]="turno"></app-vistaturnopaciente>
+                        <button class="btn btn-danger " [disabled]="turno.estado == 'cancelado'" (click)="enClickCancelar(turno)">Cancelar</button>
+                    </ng-container>
+                </ng-container>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>
+
+
+    
+<!-- <div class="col ">
+    <H1>FINALIZADOS</H1>
+    <div *ngFor="let turno of filtrarEstado('finalizado')" >
+        Turno: {{(turno.especialidadTurno | barrasivacio) +' '+(turno.especialistaTurno | barrasivacio)+' ('+(getdate(turno.fechaTurno) | barrasivacio:true | date:'M/d/yy, h:mm a' )+')'}}
+        <button class="btn btn-info " [hidden]="!turno.comentarios">Ver comentarios</button>
+        <button class="btn btn-info " [hidden]="!turno.comentarios">Completar encuesta</button>
+        <button class="btn btn-info " >Calificar atencion</button>
+    </div>
+
+</div> -->
+    <!-- <div *ngIf="this.usrauth.rol == 'paciente'">
     <app-turnospaciente/>
 </div>
-<div *ngIf="this.usrAutenticado.rol == 'especialista'">
+<div *ngIf="this.usrauth.rol == 'especialista'">
     <app-turnosespecialista/>
-</div>
+</div> -->

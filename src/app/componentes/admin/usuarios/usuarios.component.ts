@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { collectionChanges, collectionData } from '@angular/fire/firestore';
 import { UsuariosService } from 'src/app/servicios/firestore/usuarios.service';
+import { GrupoespecialistasService } from 'src/app/servicios/grupos/grupoespecialistas.service';
+import { GrupousuariosService } from 'src/app/servicios/grupos/grupousuarios.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -10,11 +12,9 @@ import { UsuariosService } from 'src/app/servicios/firestore/usuarios.service';
 export class UsuariosComponent {
   public especialistas: Array<any> = [];
 
-  constructor(public dbusuarios: UsuariosService) {
+  constructor(public dbespecialistas: GrupoespecialistasService) {
     
-    this.especialistas = dbusuarios.listaElementos.filter( pers => {
-      return (pers.tipoUsuario == 'especialista')
-    });
+    this.especialistas = dbespecialistas.listadoEspecialistas;
   }
 
   AlternarHabilitado(doc: any){

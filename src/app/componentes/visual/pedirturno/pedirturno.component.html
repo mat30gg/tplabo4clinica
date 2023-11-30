@@ -1,0 +1,17 @@
+<div >
+    <ng-container *ngIf="!this.especialistaElegido; else bloqueSeleccionarEspecialidad">
+        <app-seleccionar-especialista (clickEspecialista)="enClickEspecialista($event)"></app-seleccionar-especialista>
+    </ng-container>
+    <ng-template #bloqueSeleccionarEspecialidad>
+        <ng-container *ngIf="!this.especialidadElegida; else bloqueSeleccionarFecha">
+            <app-seleccionar-especialidad [listadoEspecialidades]="this.especialistaElegido.especialidades" (clickEspecialidad)="enClickEspecialidad($event)"></app-seleccionar-especialidad>
+        </ng-container>
+    </ng-template>
+    <ng-template #bloqueSeleccionarFecha>
+        <ng-container *ngIf="!this.fechaElegida">
+            <app-cargaturno [especialista]="this.especialistaElegido" (evFechaDefinida)="enFechaElegida($event)"></app-cargaturno>
+        </ng-container>
+    </ng-template>
+    
+        
+</div>

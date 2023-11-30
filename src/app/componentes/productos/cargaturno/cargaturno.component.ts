@@ -1,94 +1,97 @@
 import { DatePipe, WeekDay } from '@angular/common';
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
-import { Timestamp } from '@angular/fire/firestore';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { CollectionReference, Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
 import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { EspecialidadesService } from 'src/app/servicios/datos/especialidades.service';
+import { EspecialistasService } from 'src/app/servicios/datos/especialistas.service';
 import { ManejoturnosService } from 'src/app/servicios/firestore/manejoturnos.service';
+import { GrupoespecialistasService } from 'src/app/servicios/grupos/grupoespecialistas.service';
 
 @Component({
   selector: 'app-cargaturno',
   templateUrl: './cargaturno.component.html',
-  styleUrls: ['./cargaturno.component.css']
+  styleUrls: ['./cargaturno.component.css'],
 })
 export class CargaturnoComponent {
 
+  @Output() evFechaDefinida = new EventEmitter<Date>();
+  @Input() especialista: any;
+
+  public momentoTurno: Date;
+  public diaSeleccionado: Date;
+  public horaSeleccionado: Date;
+
   public proximosXVdias: Array<Date> = [];
-  public horariosDelDia: Array<Date> = [];
-  public carruselFechaMinimo = 0;
-  public carruselFechaMaximo = 3;
-  public formTurno: FormGroup<any>;
+  public turnosDisponiblesDelDia: Array<Date> = [];
 
+  public fechasOcupadas: Array<Date> = [];
 
-  constructor( public especialidadesServ: EspecialidadesService, fb: FormBuilder, public usrAuth: AutenticacionService, public mturnoServ: ManejoturnosService ){ 
-
-    let fecha;
-    for( let i = 0; i < 15; i++){
-      fecha = new Date();
-      fecha.setDate(fecha.getDate() + i );
+  constructor(
+    public db: Firestore,
+  ) {
+    
+    for (let i = 0; i < 15; i++) {
+      let fecha = new Date();
+      fecha.setHours( 0, 0, 0, 0);
+      fecha.setDate(fecha.getDate() + i+1);
       this.proximosXVdias[i] = fecha;
     }
 
-    let nuevoDia;
-    let mins;
-    for( let i=0; i<8; i++){
-      nuevoDia = new Date();
-      mins = 30*i;
-      nuevoDia.setHours(8, mins, 0);
-      this.horariosDelDia[i] = nuevoDia ;
-    }
+  }
 
-    this.formTurno = fb.group({
-      especialidadTurno: ['ginecologia', []],
-      especialistaTurno: [{nombre: 'Daniel', apellido: 'Peralta', email: 'elpapu23@gmail.com', especialidad: 'ginecologia'}, []],
-      horarioTurno: ['', []]
+  enClickDia(dia: Date){
+    this.diaSeleccionado = dia;
+    let horarios = this.obtenerHorarios( dia );
+    this.turnosDisponiblesDelDia = horarios.filter( val => { 
+      return !this.fechasOcupadas.find( f => f.toString() === val.toString() );
     })
   }
 
-  subirCarrusel(){
-    let longitudCarrusel = this.proximosXVdias.length;
-    if( this.carruselFechaMaximo < longitudCarrusel ){
-      this.carruselFechaMaximo += 1;
-      this.carruselFechaMinimo += 1;
-    }
+  enClickHora(hora: Date){
+    this.horaSeleccionado = hora;
+    this.momentoTurno = this.diaSeleccionado;
+    this.momentoTurno.setHours( hora.getHours(), hora.getMinutes());
+    this.evFechaDefinida.emit( this.momentoTurno );
   }
 
-  bajarCarrusel(){
-    if( this.carruselFechaMinimo > 0 ){
-      this.carruselFechaMinimo -= 1;
-      this.carruselFechaMaximo -= 1;
-    }
-  }
-
-  @ViewChildren("textoBoton") botonesLista: QueryList<ElementRef>;
-
-  desplegarHorarios( dia: Date, i: number ){
-    // const indiceDia = this.proximosXVdias.indexOf(dia);
-    // const referenciaEle = this.botonesLista.find((item, index) => index === indiceDia );
-    const referenciaEle = this.botonesLista.get(i);
-    referenciaEle?.nativeElement.classList.remove('d-none');
-  }
-
-  contraerHorarios( dia: Date, i: number){
-    const referenciaEle = this.botonesLista.get(i);
-    referenciaEle?.nativeElement.classList.add('d-none');
-  }
-
-  obtenerHorarios(dia: Date): Array<Date>{
-    let arrayReturn = this.horariosDelDia;
-    for(let i = 0; i < this.horariosDelDia.length; i++){
-      
-      arrayReturn[i] = new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(), 
-      this.horariosDelDia[i].getHours(), this.horariosDelDia[i].getMinutes(), this.horariosDelDia[i].getSeconds())
+  obtenerHorarios(dia: Date){
+    let arrayReturn = [];
+    for (let i = 0; i < 8; i++) {
+      arrayReturn[i] = new Date(
+        dia.getFullYear(),
+        dia.getMonth(),
+        dia.getDate(),
+        8,
+        0 + (60*i)
+      );
     }
     return arrayReturn;
   }
 
-  establecerDia(fecha: Date){
-    this.formTurno.controls['horarioTurno'].setValue(fecha.toLocaleString('ES-ar'));
+  ColecTurnos( email: string ){
+    return collection(this.db, 'usuarios/'+email+'/turnos');
   }
 
-  pedirTurno(){
-    this.mturnoServ.agregarTurno( Object.assign({}, this.formTurno.value));
+  ngOnChanges(cambios: SimpleChanges){
+    if(cambios['especialista'] && cambios['especialista'].isFirstChange() ){
+      collectionData( this.ColecTurnos( this.especialista?.email) ).subscribe( resp => {
+        this.fechasOcupadas = resp.map( val => {
+          console.log(val);
+          return val['fecha'].toDate()} );
+      })
+    }
   }
 }
+
+
+  // @ViewChildren('textoBoton') botonesLista: QueryList<ElementRef>;
+
+  // desplegarHorarios(dia: Date, i: number) {
+  //   const referenciaEle = this.botonesLista.get(i);
+  //   referenciaEle?.nativeElement.classList.remove('d-none');
+  // }
+
+  // contraerHorarios(dia: Date, i: number) {
+  //   const referenciaEle = this.botonesLista.get(i);
+  //   referenciaEle?.nativeElement.classList.add('d-none');
+  // }

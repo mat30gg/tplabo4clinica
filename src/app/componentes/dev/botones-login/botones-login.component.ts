@@ -8,28 +8,40 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class BotonesLoginComponent {
   @Output() clickUsuarioEvent = new EventEmitter<object>();
 
-  clickUsuario1(){
+  clickPaciente1(){
     this.clickUsuarioEvent.emit({
-      email: 'johngus@gmail.com',
-      clave: 'eldoctor23'
+      email: 'gomezmartin@gmail.com',
+      clave: 'peso1234'
     })
   }
-  clickUsuario2(){
+  clickPaciente2(){
     this.clickUsuarioEvent.emit({
       email: 'rigomartin@gmail.com',
       clave: 'misalud23'
     })
   }
-  clickUsuario3(){
+  clickPaciente3(){
+    this.clickUsuarioEvent.emit({
+      email: 'jramon67@gmail.com',
+      clave: 'clave12345'
+    })
+  }
+  clickEspecialista1(){
+    this.clickUsuarioEvent.emit({
+      email: 'johngus@gmail.com',
+      clave: 'eldoctor23'
+    })
+  }
+  clickEspecialista2(){
+    this.clickUsuarioEvent.emit({
+      email: 'migueljuan@gmail.com',
+      clave: 'clave123'
+    })
+  }
+  clickAdmin1(){
     this.clickUsuarioEvent.emit({
       email: 'admin@gmail.com',
       clave: 'admin'
-    })
-  }
-  clickUsuario4(){
-    this.clickUsuarioEvent.emit({
-      email: 'jramon67@gmail.com.com',
-      clave: 'clave12345'
     })
   }
 }

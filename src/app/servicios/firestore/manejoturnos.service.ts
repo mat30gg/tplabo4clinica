@@ -8,11 +8,5 @@ import { Turno } from 'src/app/clases/entidades/turno';
 })
 export class ManejoturnosService{
 
-  constructor( public db: Firestore) { }
-
-  agregarTurno( turno: Turno){
-    addDoc( collection(this.db, 'turnos'), turno);
-    addDoc( collection(this.db, 'especialistas/'+turno.especialistaTurno.email+'/turnos'), turno);
-    addDoc( collection(this.db, 'pacientes/'+turno.pacienteTurno.email+'/turnos'), turno);
-  }
+  
 }

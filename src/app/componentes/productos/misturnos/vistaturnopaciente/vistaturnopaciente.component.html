@@ -1,0 +1,4 @@
+<h5>
+    Turno: {{(turno.especialidad | barrasivacio) +' Dr. '+(turno.datosEspecialista.nombre+" "+turno.datosEspecialista.apellido | barrasivacio)+' ('+(getdate(turno.fecha) | barrasivacio:true | date:'M/d/yy, h:mm a' )+')'}}
+</h5>
+<h6>Estado: {{turno.estado}}</h6>

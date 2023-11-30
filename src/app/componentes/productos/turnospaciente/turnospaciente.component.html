@@ -3,7 +3,7 @@
         <div class="col-auto m-1 p-1 g-1">
             <input class="form-control" type="text" list="especialidadesOptions" placeholder="Especialidad" formControlName="especialidad" >
             <datalist  id="especialidadesOptions">
-                <option *ngFor="let esp of especialidadesServ.especialidades" value="{{esp}}">
+                <option *ngFor="let esp of especialidadesServ.lista" value="{{esp}}">
             </datalist>
         </div>
         <div class="col-auto m-1 p-1 g-1">

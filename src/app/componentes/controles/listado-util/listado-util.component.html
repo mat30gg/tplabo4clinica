@@ -1,0 +1,9 @@
+<div class="container ">
+    <div class="row row-cols-6 ">
+        <div class="col " *ngFor="let elem of this.listadoElementos">
+            <boton-util elementoUtil="{{elem}}" (clickBoton)="enClickEspecialidad($event)">
+                {{elem}}
+            </boton-util>
+        </div>
+    </div>
+</div>

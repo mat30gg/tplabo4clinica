@@ -1,19 +1,21 @@
-<form [formGroup]="formTurno">
-
-    <div class="row ">
-        <div class="col ">
-            <label class="form-label ">Especialidad</label>
-            <input class="form-control " type="text" list="especialidadesOptions" formControlName="especialidadTurno">
-            <datalist  id="especialidadesOptions">
-                <option *ngFor="let esp of especialidadesServ.especialidades" value="{{esp}}">
-            </datalist>
-        </div>
-        <div class="col">
-            <label class="form-label">Especialista</label>
-            <input class="form-control" type="text" formControlName="especialistaTurno">
-        </div>
+<div class="container">
+    <div class="row row-cols-5 ">
+        <ng-container *ngIf="!this.diaSeleccionado; else bloqueSeleccionarHora">
+            <div class="col " *ngFor="let dia of this.proximosXVdias">
+                <boton-util clases="btn btn-outline-dark rounded-0 " [elementoUtil]="dia" (clickBoton)="enClickDia($event)">{{dia | date:'Y-MM-dd'}}</boton-util>
+            </div>
+        </ng-container>
+        <ng-template #bloqueSeleccionarHora>
+            <div class="col " *ngFor="let hora of this.turnosDisponiblesDelDia">
+                <boton-util clases="btn btn-outline-dark rounded-4" [elementoUtil]="hora" (clickBoton)="enClickHora($event)">{{hora | date:'H:mm'}}</boton-util>
+            </div>
+        </ng-template>
     </div>
-    <div>
+</div>
+
+
+<!-- <form [formGroup]="formTurno">
+    <div class="">
 
         <div>
 
@@ -49,4 +51,4 @@
 
     </div>
     <button class="btn btn-info" type="button" (click)="pedirTurno()">Pedir turno</button>
-</form>
+</form> -->

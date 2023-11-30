@@ -1,0 +1,48 @@
+<form [formGroup]="this.encuesta">
+    <div>
+        <label >Alguna sugerencia sobre la atencion</label>
+        <input type="text" formControlName="sugerencia">
+    </div>
+    <div>
+        <ngb-rating [max]="5" formControlName="puntaje">
+            <ng-template let-fill="fill" let-index="index">
+                <i class="bi bi-star{{ fill === 100 ? '-fill' : '' }}"></i>
+            </ng-template>
+        </ngb-rating>
+    </div>
+    <div>
+        Es su primera vez en esta clinica?
+        <label for="siradio">Si</label>
+        <input type="radio" id="siradio" formControlName="primeravez" [value]="true">
+        <label for="noradio">No</label>
+        <input type="radio" id="noradio" formControlName="primeravez" [value]="false">
+    </div>
+    <div>
+        Seleccione cuales corresponda
+      
+            <label>
+                <input type="checkbox" formControlName="diagnosticorapido">
+                El diagnostico fue rapido y se receto medicamentos
+            </label>
+            <label>
+                <input type="checkbox" formControlName="atencionprofesional">
+                La atencion fue profesional
+            </label>
+            <label>
+                <input type="checkbox" formControlName="tratodelpersonal">
+                El trato del personal fue correcto
+            </label>
+            <label>
+                <input type="checkbox" formControlName="higienico">
+                El establecimiento era higienico
+            </label>
+       
+    </div>
+    <div>
+        <label>Cual es la probabilidad de que vuelvas a atenderte en el establecimiento?
+            <input type="range" min="0" max="100" step="10" formControlName="probabilidadvuelta" #probvuel>
+            <input type="text" [value]="probvuel.value" readonly >
+        </label>
+    </div>
+    <button (click)="enviarFormulario()" [disabled]="this.encuesta.invalid">Enviar</button>
+</form>

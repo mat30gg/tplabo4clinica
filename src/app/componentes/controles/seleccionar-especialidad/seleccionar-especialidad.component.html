@@ -1,0 +1,9 @@
+<div class="container ">
+    <div class="row row-cols-6 ">
+        <div class="col " *ngFor="let esp of this.listadoEspecialidades">
+            <boton-util clases="btn btn-outline-dark rounded-4" elementoUtil="{{esp}}" (clickBoton)="enClickEspecialidad($event)">
+                <img src="assets/cruzroja.png" width="100"/>
+            </boton-util>
+        </div>
+    </div>
+</div>

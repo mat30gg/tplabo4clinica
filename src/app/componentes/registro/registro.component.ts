@@ -1,4 +1,5 @@
 import { Component, Inject, Input } from '@angular/core';
+import { Firestore, collection, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import {
   FormGroup,
   FormBuilder,
@@ -9,13 +10,16 @@ import {
   RequiredValidator,
   PatternValidator,
   NonNullableFormBuilder,
+  FormArray,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Especialista } from 'src/app/clases/entidades/especialista';
 import { Paciente } from 'src/app/clases/entidades/paciente';
 import { Usuario } from 'src/app/clases/entidades/usuario';
 import { ClaseStorage } from 'src/app/clases/firestorage/clase-storage';
 import { ClaveValidaciones } from 'src/app/clases/validaciones/clave-validaciones';
 import { MisValidaciones } from 'src/app/clases/validaciones/mis-validaciones';
+import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { EspecialidadesService } from 'src/app/servicios/datos/especialidades.service';
 
 import { UsuariosService } from 'src/app/servicios/firestore/usuarios.service';
@@ -27,15 +31,12 @@ import { UsuariosService } from 'src/app/servicios/firestore/usuarios.service';
   styleUrls: ['./registro.component.css'],
 })
 export class RegistroComponent {
-  usuario: any;
+  nusuario: any;
   tipoUsuario = '';
   @Input() menuAdmin: boolean = false;
 
-  fTipousuario = this.fbuilder.group({
-    tipo: ['', [Validators.required]]
-  });
-
-  formRegistro = this.fbuilder.nonNullable.record({
+  formRegistro = this.fbuilder.nonNullable.group({
+    tipoUsuario: ['', [Validators.required]],
     nombre: ['', [
       Validators.required
     ]],
@@ -56,21 +57,19 @@ export class RegistroComponent {
       ClaveValidaciones.longitudValidacion,
       MisValidaciones.espaciosValidacion
     ]],
-    edad: [0, [
+    edad: [null, [
       Validators.required,
       Validators.min(1)
     ]],
-    dni: [0, [
+    dni: [null, [
       Validators.required,
       Validators.minLength(6)
-    ]],
-    especialidad: [{value: '', disabled: true}, [
-      Validators.required,
-      
     ]],
     obraSocial: [{value: '', disabled: true}, [
       Validators.required
     ]],
+    especialidades: this.fbuilder.array([
+    ]),
   },{
     validators: [ClaveValidaciones.confirmarClaveValidacion]
   });
@@ -79,73 +78,64 @@ export class RegistroComponent {
     public dbusuarios: UsuariosService,
     public fbuilder: FormBuilder,
     public guardadoImagenes: ClaseStorage,
-    public especialidadesService: EspecialidadesService
+    public especialidadesService: EspecialidadesService,
+    private ruter: Router,
+    private authUsr: AutenticacionService,
+    private db: Firestore
   ) {
 
-    this.fTipousuario.controls.tipo.valueChanges.subscribe(r => {
-      this.formRegistro.controls['especialidad'].reset({value: '', disabled: true});
+    this.formRegistro.controls['tipoUsuario'].valueChanges.subscribe(r => {
+      this.formRegistro.controls['especialidades'].reset();
       this.formRegistro.controls['obraSocial'].reset({value: '', disabled: true});
       if(r == 'paciente'){
         this.formRegistro.controls['obraSocial'].enable();
       }else if(r == 'especialista'){
-        this.formRegistro.controls['especialidad'].enable();
+        this.formRegistro.controls['especialidades'].enable();
       }
     });
+
+    this.addControlEspecialidad();
   }
 
   RegistrarUsuario() {
-    this.formRegistro.controls['confirmacionClave'].disable();
-    let tipoUsr = this.fTipousuario.controls.tipo.value;
-    if(tipoUsr && this.formRegistro.valid) {
-      if (tipoUsr == 'paciente') {
-        this.usuario = new Paciente(this.formRegistro.value);
-      } else if(tipoUsr == 'especialista') {
-        this.usuario = new Especialista(this.formRegistro.value);
-      } else if(tipoUsr == 'admin'){
-        this.usuario = new Usuario(this.formRegistro.value);
-        this.usuario.tipoUsuario = 'admin'
-      }
-      this.dbusuarios.guardar(Object.assign({}, this.usuario), 'usuarios');
+    const colUsuarios = collection(this.db, 'usuarios');
+    let usuarioValues = this.formRegistro.value;
+    if( this.formRegistro.valid) {
+
+      this.formRegistro.controls['confirmacionClave'].disable();
+      let nDocUsuario = doc(colUsuarios, '/'+this.formRegistro.controls['email'].value);
+      let nuevoUsuario = new Usuario(usuarioValues);
+      let objetoUsr = {datos: Object.assign({}, nuevoUsuario), accesoHabilitado: true, emailVerificado: true};
+      if(usuarioValues['tipoUsuario'] == 'paciente' ) objetoUsr.emailVerificado = false;
+      setDoc(nDocUsuario, objetoUsr);
+
+      //this.authUsr.login( nuevoUsuario );
+      this.ruter.navigate(['/home']);
     }
-    this.formRegistro.controls['confirmacionClave'].enable();
-  }
-
-  test(){
-    console.log(this.fTipousuario.controls['tipo'])
-  }
-
-  botonPrueba() {
-    this.fTipousuario.controls.tipo.setValue('paciente');
-    this.formRegistro.setValue({
-      nombre: "Martin",
-      apellido: "Rigoberto",
-      email: "rigomartin@gmail.com",
-      clave: "misalud23",
-      confirmacionClave: "misalud23",
-      edad: 32,
-      dni: 24338211,
-      especialidad: '',
-      obraSocial: 90000586837626
-    });
-  }
-
-  botonPrueba2() {
-    this.fTipousuario.controls.tipo.setValue('especialista');
-    this.formRegistro.setValue({
-      nombre: "John",
-      apellido: "Gustavo",
-      email: "johngus@gmail.com",
-      clave: "eldoctor23",
-      confirmacionClave: "eldoctor23",
-      edad: 37,
-      dni: 23382411,
-      especialidad: 'clinica medica',
-      obraSocial: ''
-    });
   }
 
   subioArchivo(elementoHtml: HTMLInputElement){
     this.guardadoImagenes.subirArchivo(elementoHtml);
     console.log(443);
+  }
+
+  getControlesEspecialidades(){
+    return (<FormArray>this.formRegistro.get('especialidades')).controls;
+  }
+
+  addControlEspecialidad(){
+    const especialidades = this.formRegistro.get('especialidades') as FormArray;
+    especialidades.push( this.crearControlEspecialidad() );
+  }
+
+  crearControlEspecialidad(){
+    return this.fbuilder.control({
+      value: '',
+      disabled: false
+    });
+  }
+
+  test(){
+    console.log('resolvio');
   }
 }

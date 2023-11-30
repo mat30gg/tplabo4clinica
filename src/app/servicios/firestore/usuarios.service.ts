@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, DocumentReference, Firestore, collection, doc, query } from '@angular/fire/firestore';
+import { DocumentData, DocumentReference, Firestore, collection, collectionData, doc, query } from '@angular/fire/firestore';
 import { ClaseFirestore } from 'src/app/clases/conexion-firestore';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuariosService extends ClaseFirestore{
+export class UsuariosService{
 
+  public listadoUsuarios : Array<any> = [];
   constructor( db: Firestore) { 
-    super('usuarios', db);
-  }
-
-  override actualizar(objetoViejo: DocumentReference<DocumentData, DocumentData>, cambio: object): void {
-    
+    const coleccionUsuarios = collection(db, 'usuarios');
+    collectionData( coleccionUsuarios ).subscribe( resp => { this.listadoUsuarios = resp });
   }
 }
