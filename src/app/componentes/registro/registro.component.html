@@ -1,125 +1,97 @@
 
-<div class="vh-100 overflow-scroll" style="background-color: cyan;">
-    <ng-template class="" #bloqueSeleccionTipo>
+<ng-template #bloqueSeleccionTipo>
+    <controlseleccionartipo [menuAdmin]="this.menuAdmin" (seleccionTipo)="formRegistro.get('tipoUsuario')?.setValue($event)"></controlseleccionartipo>
+</ng-template>
+<ng-container class="  " *ngIf="this.formRegistro.controls['tipoUsuario'].value; else bloqueSeleccionTipo">
+    <div class=" ">
+        <div class="row my-2">
+            <div class="col col-auto m-auto ">
 
-        <div class="z-1">
-            <div class="container px-4">
+                <form class="border border-2 border-primary p-2" [formGroup]="formRegistro">
 
-            
-                <form [formGroup]="this.formRegistro" id="input-tipousuario" >
-                    <div class="row ">
-                        <div class="col-auto mx-auto ">
-    
-                            <button class="btn rounded-circle " type="button" (click)="formRegistro.get('tipoUsuario')?.setValue('paciente')">
-                                <img class="img-fluid rounded-circle" width="350px" src="assets/pacienteimagenregistro.jpg" />
-                            </button>
-    
+                    <div class="row mb-auto">
+                        <div class="col">
+                            <label class="form-label" for="input-nombre">Nombre</label>
+                            <input class="form-control" type="text" id="input-nombre" formControlName="nombre">
                         </div>
-                        <div class="col-auto mx-auto">
-    
-                            <button class="btn rounded-circle " type="button" (click)="formRegistro.get('tipoUsuario')?.setValue('especialista')">
-                                <img class="img-fluid rounded-circle" width="350px" src="assets/especialistaimagenregistro.jpg" />
-                            </button>
-                            
+                        <div class="col">
+                            <label class="form-label" for="input-apellido">Apellido</label>
+                            <input class="form-control" type="text" id="input-apellido" formControlName="apellido">
                         </div>
-                        <div class="col-auto mx-auto" [ngClass]="!menuAdmin?'d-none':''">
-    
-                            <button class="btn rounded-circle " type="button" (click)="formRegistro.get('tipoUsuario')?.setValue('admin')">
-                                <img class="img-fluid rounded-circle" width="350px" src="assets/adminimagenregistro.jpg"/>
-                            </button>
-    
+                    </div>
+
+                    <div class="row mb-auto">
+                        <div class="col">
+                            <label class="form-label" for="input-edad">Edad</label>
+                            <input class="form-control" type="number" id="input-edad" formControlName="edad">
+                        </div>
+                        <div class="col">
+                            <label class="form-label" for="input-dni">Documento</label>
+                            <input class="form-control" type="number" id="input-dni" formControlName="dni">
                         </div>
 
                     </div>
+
+                    <div class="mb-auto">
+                        <label class="form-label" for="input-correo">Correo electronico</label>
+                        <input class="form-control" type="text" id="input-correo" formControlName="email">
+                    </div>
+
+                    <div class="mb-auto">
+                        <label class="form-label" for="input-clave">Clave</label>
+                        <input class="form-control" type="password" id="input-clave" formControlName="clave">
+                    </div>
+
+                    <div class="mb-auto">
+                        <label class="form-label" for="input-confirmacionclave">Confirmar clave</label>
+                        <input class="form-control" type="password" id="input-confirmacionclave"
+                            formControlName="confirmacionClave">
+                    </div>
+
+                    <div class="row mb-auto">
+                        <div [ngSwitch]="this.formRegistro.controls['tipoUsuario'].value">
+                            <div *ngSwitchCase="'paciente'" class="form-floating">
+                                <input class="form-control" id="inpObraSocial" type="text" placeholder="0"
+                                    formControlName="obraSocial" />
+                                <label for="inpObraSocial">Obra social</label>
+                            </div>
+                            <div *ngSwitchCase="'especialista'">
+
+                                <label for="inpEspecialidades">Especialidades</label>
+                                <div formArrayName="especialidades" id="inpEspecialidades" *ngFor="let controlEspecialidad of getControlesEspecialidades()">
+                                    <select class="form-select my-1" [formControl]="$any(controlEspecialidad)" >
+                                        <option selected disabled hidden value="">Seleccionar especialidad</option>
+                                        <option *ngFor="let esp of this.especialidadesService.lista" [ngValue]="esp | lowercase">
+                                            {{esp | normalizar}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-outline-dark my-2" (click)="addControlEspecialidad()">[+]</button>
+
+                            </div>
+                            <div *ngSwitchDefault></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-auto">
+                        <label class="form-label">Imagen de perfil</label>
+                        <button class="btn btn-secondary w-auto mx-auto" type="button" (click)="subidaImagen.click()">
+                            <i class="bi bi-upload"></i>
+                            <input type="file" accept="image/png image/jpeg" class="d-none " (change)="subioArchivo(subidaImagen)"  #subidaImagen>
+                        </button>
+                        <div>
+                            <img class="img-fluid m-2 d-inline" src="{{ imagen }}" width="25px" *ngFor="let imagen of listadoImagenes">
+                        </div>
+                    </div>
+
+                    <re-captcha siteKey="6LcPXiMpAAAAAESEshTa728WtT7jFQsvqpq4x1YH" formControlName="recaptchaRegistro"></re-captcha>
+                    <button type="button" class="btn btn-primary" (click)="RegistrarUsuario()"
+                        [disabled]="!this.formRegistro.valid ">Registrarse</button>
                 </form>
             </div>
         </div>
-    </ng-template>
-    <div class="z-0" *ngIf="this.formRegistro.controls['tipoUsuario'].value; else bloqueSeleccionTipo" >
-        <div class="container ">
-            <!-- d-flex align-items-center justify-content-center -->
-            <div class="row justify-content-center">
-                <div class="col-6 border border-2 border-primary p-2 m-5">
-
-                    <form [formGroup]="formRegistro">
-
-                        <div class="row mb-2">
-                            <div class="col">
-                                <label class="form-label" for="input-nombre">Nombre</label>
-                                <input class="form-control" type="text" id="input-nombre" formControlName="nombre">
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="input-apellido">Apellido</label>
-                                <input class="form-control" type="text" id="input-apellido" formControlName="apellido">
-                            </div>
-
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col">
-                                <label class="form-label" for="input-edad">Edad</label>
-                                <input class="form-control" type="number" id="input-edad" formControlName="edad">
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="input-dni">Documento</label>
-                                <input class="form-control" type="number" id="input-dni" formControlName="dni">
-
-                            </div>
-
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label" for="input-correo">Correo electronico</label>
-                            <input class="form-control" type="text" id="input-correo" formControlName="email">
-
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label" for="input-clave">Clave</label>
-                            <input class="form-control" type="password" id="input-clave" formControlName="clave">
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label" for="input-confirmacionclave">Confirmar clave</label>
-                            <input class="form-control" type="password" id="input-confirmacionclave"
-                                formControlName="confirmacionClave">
-                        </div>
-                        <div class="row mb-2">
-                            <div [ngSwitch]="this.formRegistro.controls['tipoUsuario'].value">
-                                <div *ngSwitchCase="'paciente'" class="form-floating">
-                                    <input class="form-control" id="inpObraSocial" type="text" placeholder="0"
-                                        formControlName="obraSocial" />
-                                    <label for="inpObraSocial">Obra social</label>
-                                </div>
-                                <div *ngSwitchCase="'especialista'">
-                                    <label for="inpEspecialidades">Especialidades</label>
-                                    <div formArrayName="especialidades" id="inpEspecialidades" *ngFor="let controlEspecialidad of getControlesEspecialidades()">
-                                        <select class="form-select my-1" [formControl]="$any(controlEspecialidad)" >
-                                            <option selected disabled hidden value="">Seleccionar especialidad</option>
-                                            <option *ngFor="let esp of this.especialidadesService.lista" [ngValue]="esp | lowercase">
-                                                {{esp | normalizar}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <button class="btn btn-outline-dark my-2" (click)="addControlEspecialidad()">[+]</button>
-                                </div>
-                                <div *ngSwitchDefault></div>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <label class="form-label">
-                                Imagen de perfil
-                                <input type="file" accept="image/png image/jpeg" class="d-none "
-                                    (change)="subioArchivo(subidaImagen)" #subidaImagen>
-                                <button class="btn btn-secondary" type="button"
-                                    (click)="subidaImagen.click()">+</button>
-                            </label>
-                        </div>
-                    </form>
-                    <re-captcha (resolved)="test()" siteKey="6Ld8YyEpAAAAADCYK07UFENV18vxPLcqX7vvRtzM"></re-captcha>
-                    <button type="button" class="btn btn-primary" (click)="RegistrarUsuario()"
-                        [disabled]="!this.formRegistro.valid ">Registrarse</button>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
+</ng-container>
 
 <!-- <button type="button" class="btn btn-secondary" (click)="botonPrueba()">Prueba</button>
 <button type="button" class="btn btn-secondary" (click)="botonPrueba2()">Prueba2</button> -->

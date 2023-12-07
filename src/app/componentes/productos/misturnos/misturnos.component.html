@@ -17,7 +17,7 @@
                     <ng-container *ngSwitchCase="'paciente'">
                         <app-vistaturnopaciente [turno]="turno"></app-vistaturnopaciente>
                         <div class="btn-group">
-                            <button class="btn btn-danger " [hidden]="turno.estado == 'realizado'" [disabled]="turno.estado == 'cancelado'" (click)="enClickCancelar(turno)">Cancelar</button>
+                            <button class="btn btn-danger " [hidden]="turno.estado != 'pendiente'" [disabled]="turno.estado == 'cancelado'" (click)="enClickCancelar(turno)">Cancelar</button>
                             <button class="btn btn-info " [hidden]="!turno.comentarios" (click)="enClickVerResenia(turno)">Ver reseña</button>
                             <button class="btn btn-info" [hidden]="turno.estado != 'finalizado' || !turno.comentarios" (click)="enClickCompletarEncuesta(turno)">Completar encuesta</button>
                             <button class="btn btn-info" [hidden]="turno.estado != 'finalizado'" (click)="enClickCalificarAtencion(turno)">Calificar atencion</button>
@@ -33,18 +33,14 @@
                     </ng-container>
                     <ng-container *ngSwitchCase="'admin'">
                         <app-vistaturnopaciente [turno]="turno"></app-vistaturnopaciente>
-                        <button class="btn btn-danger " [disabled]="turno.estado == 'cancelado'" (click)="enClickCancelar(turno)">Cancelar</button>
+                        <button class="btn btn-danger " [hidden]="turno.estado != 'pendiente' && turno.estado != 'finalizado'" [disabled]="turno.estado == 'cancelado'" (click)="enClickCancelar(turno)">Cancelar</button>
                     </ng-container>
                 </ng-container>
-                
-            </div>
-            
-        </div>
-        
-    </div>
-    
-</div>
 
+            </div>
+        </div>
+    </div>
+</div>
 
     
 <!-- <div class="col ">

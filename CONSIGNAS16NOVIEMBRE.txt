@@ -12,3 +12,14 @@
 - Una vez seleccionado mostrará las especialidades, en botones cuadrados con bordes redondeados, con la imagen de la especialidad. En caso de no tener muestra imagen por default.
 - Una vez seleccionada la especialidad, aparecerán los dias con turnos disponibles para ese profesional. Esos botones deben ser rectangulares. Formato (2021-09-09)
 - Seleccionado el dia mostrara los horarios disponibles. Estos botones deben ser cuadrados con bordes redondeados. Formato 13:15
+
+
+S3
+Sección Pacientes,	"Para los especialistas. Solo deberá mostrar los usuarios que el
+especialista haya atendido al menos 1 vez."
+...
+Sección usuarios	En la sección usuarios, solamente para el perfil Administrador, un excel con los datos de los usuarios.
+...Mi perfil	"Para los usuarios paciente, un pdf con la historia clínica. El PDF tiene que tener
+logo de la clínica, título del informe y fecha de emisión."
+Animaciones	"Se debe agregar al menos 2, como mínimo, animaciones de transición entre componentes al navegar
+la aplicación."

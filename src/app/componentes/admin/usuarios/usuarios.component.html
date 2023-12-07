@@ -1,8 +1,27 @@
-<ul>
-    <li *ngFor="let doctor of this.especialistas">
-        <button type="button" (click)="AlternarHabilitado(doctor)" [ngClass]="doctor.aprobado?'habilitado':'inhabilitado'">
-            {{doctor.nombre + ' ' + doctor.apellido}}
-        </button>
-    </li>
-    <app-registro [menuAdmin]="true"></app-registro>
-</ul>
+<div class=" row row-cols-auto">
+    <div class="col col-auto">
+        <div>
+            <h2>Especialistas</h2>
+            <div class="m-2 d-inline-flex" *ngFor="let doctor of this.especialistas">
+                <button class="btn " type="button" (click)="AlternarHabilitado(doctor)" [ngClass]="doctor.accesoHabilitado?'habilitado':'inhabilitado'">
+                    {{doctor.datos.nombre + ' ' + doctor.datos.apellido}}
+                </button>
+            </div>
+        </div>
+        <div class="border border-1">
+            <h2>Pacientes</h2>
+            <div *ngFor="let paciente of this.pacientes">
+                <h6 class="d-inline-flex">{{paciente.datos.nombre+' '+paciente.datos.apellido+' ('+paciente.datos.email+')'}}</h6>
+                <button class="btn btn-link d-inline-flex" (click)="descargarHistoriaClinica(paciente)">Historia clinica<i class="bi-download"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="col col-auto end-0 top-0 bottom-0 ">
+        <div>
+            <h2>Nuevo usuario</h2>
+            <app-registro [menuAdmin]="true"></app-registro>
+        </div>
+    
+    </div>
+
+</div>

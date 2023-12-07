@@ -1,1 +1,20 @@
-<h1>{{this.usrAuth.usuario.nombre+' '+this.usrAuth.usuario.apellido}}</h1>
+<h1>{{this.usuario.nombre+' '+this.usuario.apellido}}</h1>
+<img class=" img-fluid" [src]="urlimg" *ngFor="let urlimg of urlImagenesDPerfil" height="100px" width="100px">
+<h6>{{this.usuario.dni}}</h6>
+<h3>Edad <strong>{{this.usuario.edad}}</strong></h3>
+<ng-container *ngIf="this.usrauth.rol == 'paciente'">
+    Obra social:
+    <span class="texto-verde">{{this.usuario.obraSocial}}</span>
+</ng-container>
+<ng-container *ngIf="this.usrauth.rol == 'especialista'">
+    Especialidades:
+    <h6 class="texto-azul" *ngFor="let esp of this.usuario.especialidades">{{esp}}</h6>
+    <h4>Mis horarios</h4>
+    <button class=" btn " [ngClass]="{'hora-trabajo': hor.disponible }" *ngFor="let hor of horasDeTrabajo" (click)="enClickHora(hor)">
+        {{hor | tiempopipe }}
+    </button>
+</ng-container>
+<ng-container *ngIf="this.usrauth.rol == 'paciente'">
+    <h6>Historia clinica</h6>
+    <a class=" btn" (click)="enClickDescargarHistoria()" >Descargar historia clinica<i class=" bi-download"></i></a>
+</ng-container>

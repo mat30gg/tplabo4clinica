@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <h4>Datos del paciente</h4>
+</div>
+<div class="modal-body" [formGroup]="this.formDatosFisicos">
+    <div formGroupName="datosEstaticos">
+        <div>
+            <label class="form-label" for="inDiagnostico">Razon y diagnostico de la consulta</label>
+            <input class="form-control" type="text" id="inDiagnostico" formControlName="comentario">
+        </div>
+        <div class="input-group">
+            <input class="form-control" type="number" placeholder="Altura" formControlName="altura">
+            <span class="input-group-text ">cm.</span>
+        </div>
+        <div class="input-group">
+            <input class="form-control" type="number" placeholder="Peso" formControlName="peso">
+            <span class="input-group-text ">kg.</span>
+        </div>
+        <div class="input-group">
+            <input class="form-control" type="number" placeholder="Temperatura" formControlName="temperatura">
+            <span class="input-group-text">°C</span>
+        </div>
+        <div class="input-group">
+            <input class="form-control" type="number" placeholder="Presion" formControlName="presion">
+            <span class="input-group-text">mm Hg</span>
+        </div>
+    </div>
+    <div formGroupName="datosDinamicos">
+        <h3>Otros datos</h3>
+        <div class="row mb-1">
+            <div class="col">Dato</div>
+            <div class="col">Valor</div>
+        </div>
+        <div class="input-group row mb-1" *ngFor="let controlDato of controlesDD()">
+            <div class="col">
+                <input class="form-control " type="text" [formControl]="controlDato.get('clave')">
+            </div>
+            <div class="col">
+                <input class="form-control " type="text" [formControl]="controlDato.get('valor')">
+            </div>
+        </div>
+        <div class="input-group row mb-2">
+            <div class="col col-auto">
+                <button class="btn btn-outline-secondary" (click)="fdd_enClickAgregarDato()" [disabled]="controlesDD().length >= 3">
+                    <i class="bi-plus"></i>
+                </button>
+            </div>
+            <div class="col col-auto">
+                <button class="btn btn-outline-secondary" (click)="fdd_enClickRemoverDato()" [disabled]="controlesDD().length <= 0">
+                    <i class="bi-dash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" (click)="fdf_enClickEnviarDatos()" [disabled]="this.formDatosFisicos.invalid">Enviar</button>
+</div>

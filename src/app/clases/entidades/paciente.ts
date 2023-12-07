@@ -10,10 +10,4 @@ export class Paciente extends Usuario{
         Object.assign(this, init);  
         this.tipoUsuario = 'paciente';  
     }
-
-    override agregarImagen(dirImagen: string): void {
-        if(this.imagenesDePerfil.length < 2 ){
-            super.agregarImagen(dirImagen);
-        }
-    }
 }

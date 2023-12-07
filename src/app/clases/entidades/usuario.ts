@@ -9,14 +9,10 @@ export class Usuario {
     public email: any;
     public dni: any;
     public fechaCreacionUsuario: any;
-    public imagenesDePerfil: Array<any> = [];
+    public direccionimagenes: string;
 
         constructor(init? : Partial<Usuario>){
             Object.assign(this, init);
             this.fechaCreacionUsuario = Date();
-    }
-
-    agregarImagen( dirImagen: string ){
-        this.imagenesDePerfil.push(dirImagen);
     }
 }

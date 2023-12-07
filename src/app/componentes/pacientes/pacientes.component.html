@@ -1,0 +1,20 @@
+<div class="row row-cols-6">
+    <div class="col " *ngFor="let paciente of this.listaPacientes">
+        <div class="card text-center d-inline-block" >
+            <div class="card-header ">
+                {{paciente.nombre+' '+paciente.apellido}}
+                <small class="text-muted">{{paciente.email}}</small>
+            </div>
+            <div class="card-body ">
+                <p class="card-text">
+                    DNI {{paciente.dni}} <br>
+                    Edad {{paciente.edad}} <br>
+                    OS {{paciente.obraSocial}}
+                </p>
+                <a class=" card-link " (click)="enClickDescargarHistoriaClinica( paciente )">Historia clinica <i class="bi-download"></i></a>
+            </div>
+            
+        </div>
+    </div>
+
+</div>

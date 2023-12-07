@@ -11,10 +11,4 @@ export class Especialista extends Usuario{
         Object.assign(this, init);
         this.tipoUsuario = 'especialista';
     }
-
-    override agregarImagen(dirImagen: string): void {
-        if(this.imagenesDePerfil.length < 1 ){
-            super.agregarImagen(dirImagen);
-        }
-    }
 }

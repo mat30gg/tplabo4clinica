@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { HighchartsChartModule } from 'highcharts-angular';
 
 import { AppComponent } from './app.component';
 import { NavbarcompComponent } from './componentes/visual/navbarcomp/navbarcomp.component';
@@ -36,7 +38,13 @@ import { VistaturnopacienteComponent } from './componentes/productos/misturnos/v
 import { VistaturnomedicoComponent } from './componentes/productos/misturnos/vistaturnomedico/vistaturnomedico.component';
 import { EncuestapacienteComponent } from './componentes/productos/encuestapaciente/encuestapaciente.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { SeleccionartipoComponent } from './componentes/registro/seleccionartipo/seleccionartipo.component';
+import { TiempopipePipe } from './pipes/transformacion/tiempopipe.pipe';
+import { MatDialogModule } from '@angular/material/dialog';
+import { PopupdatosfisicosComponent } from './componentes/controles/popupdatosfisicos/popupdatosfisicos.component';
+import { PacientesComponent } from './componentes/pacientes/pacientes.component';
+import { EstadisticasComponent } from './componentes/admin/estadisticas/estadisticas.component';
 
 @NgModule({
   declarations: [
@@ -67,18 +75,27 @@ import { RecaptchaModule } from 'ng-recaptcha';
     FiltroturnosComponent,
     VistaturnopacienteComponent,
     VistaturnomedicoComponent,
-    EncuestapacienteComponent
+    EncuestapacienteComponent,
+    SeleccionartipoComponent,
+    TiempopipePipe,
+    PopupdatosfisicosComponent,
+    PacientesComponent,
+    EstadisticasComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    HighchartsChartModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDialogModule,
     provideFirebaseApp(() => initializeApp({"projectId":"tp-clinica-ce784","appId":"1:69946792691:web:5bcf2a05ad4b46ef727586","storageBucket":"tp-clinica-ce784.appspot.com","apiKey":"AIzaSyCAz7HkPbZlPD5pjdf9nMQoYjih7SWcaec","authDomain":"tp-clinica-ce784.firebaseapp.com","messagingSenderId":"69946792691"})),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     NgbModule,
-    RecaptchaModule
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ],
   providers: [ClaseStorage],
   bootstrap: [AppComponent]

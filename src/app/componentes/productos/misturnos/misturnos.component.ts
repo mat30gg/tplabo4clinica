@@ -1,10 +1,13 @@
-import { Component} from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { CollectionReference, Firestore, QueryDocumentSnapshot, Timestamp, addDoc, collection, collectionChanges, collectionData, collectionGroup, doc, docData, docSnapshots, getDoc, getDocs, setDoc, snapToData, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DocumentData } from 'rxfire/firestore/interfaces';
 import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { EspecialidadesService } from 'src/app/servicios/datos/especialidades.service';
 import Swal from 'sweetalert2';
+import { PopupdatosfisicosComponent } from '../../controles/popupdatosfisicos/popupdatosfisicos.component';
+import { RegistrosService } from 'src/app/servicios/registros.service';
 
 @Component({
   selector: 'app-misturnos',
@@ -13,12 +16,13 @@ import Swal from 'sweetalert2';
 })
 export class MisturnosComponent {
 
+  private modalServ = inject(NgbModal);
   public ocultarEncuesta = true;
   public colTurnos;
   public listadoTurnos: Array<any> = [];
   public listadoMostrar: Array<any> = [];
 
-  constructor( public usrauth: AutenticacionService, public db: Firestore ){
+  constructor( public usrauth: AutenticacionService, public db: Firestore, private logserv: RegistrosService ){
     if(usrauth.rol == 'admin'){
       collectionData( collection(this.db, 'turnos'), {idField: 'codturno'} ).subscribe( resp => {
         this.listadoTurnos = resp;
@@ -112,18 +116,30 @@ export class MisturnosComponent {
   }
 
   enClickFinalizarTurno(turno: any){
+    console.log(turno);
     Swal.fire({
       title: "Finalizo el turno",
-      text: "Dar un comentario y el diagnostico de la visita",
+      text: "Dar un comentario de la visita",
       input: 'text',
       allowOutsideClick: false,
-    }).then( resp => { 
-      if(resp.isConfirmed){
-        turno.estado = 'finalizado';
-        turno.comentarios = (turno.comentarios??'') + '\nDiagnostico de la visita: ' + resp.value;
-        this.setearTurno(turno);
-      }
-    });
+    }).then( 
+      resp => 
+      { 
+        if(resp.isConfirmed)
+        {
+          this.logserv.guardarRegistro('fin_turno', {fecha_fin: new Date().toISOString(), especialista: turno.datosEspecialista.email, especialidad: turno.especialidad, paciente: turno.datosPaciente.email})
+          turno.estado = 'finalizado';
+          turno.comentarios = (turno.comentarios??'') + ' Comentario de la visita: ' + resp.value;
+          this.setearTurno(turno);
+
+          this.modalServ.open(PopupdatosfisicosComponent).result.then( 
+          popresp => 
+          {
+            const emailPaciente = turno.datosPaciente.email;
+            setDoc( doc(this.db, 'usuarios', emailPaciente, 'historialclinico', turno.codturno), popresp ).catch( err => {console.log(err)})
+          })
+        }
+    })
   }
 
   enClickAceptarTurno(turno: any){

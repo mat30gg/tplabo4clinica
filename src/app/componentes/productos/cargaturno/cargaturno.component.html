@@ -6,8 +6,8 @@
             </div>
         </ng-container>
         <ng-template #bloqueSeleccionarHora>
-            <div class="col " *ngFor="let hora of this.turnosDisponiblesDelDia">
-                <boton-util clases="btn btn-outline-dark rounded-4" [elementoUtil]="hora" (clickBoton)="enClickHora($event)">{{hora | date:'H:mm'}}</boton-util>
+            <div class="col " *ngFor="let momento of this.turnosDisponiblesDelDia">
+                <boton-util clases="btn btn-outline-dark rounded-4" [elementoUtil]="momento" (clickBoton)="enClickHora($event)">{{momento | tiempopipe }}</boton-util>
             </div>
         </ng-template>
     </div>

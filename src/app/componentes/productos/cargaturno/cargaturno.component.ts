@@ -22,7 +22,7 @@ export class CargaturnoComponent {
   public horaSeleccionado: Date;
 
   public proximosXVdias: Array<Date> = [];
-  public turnosDisponiblesDelDia: Array<Date> = [];
+  public turnosDisponiblesDelDia: Array<any> = [];
 
   public fechasOcupadas: Array<Date> = [];
 
@@ -42,15 +42,18 @@ export class CargaturnoComponent {
   enClickDia(dia: Date){
     this.diaSeleccionado = dia;
     let horarios = this.obtenerHorarios( dia );
-    this.turnosDisponiblesDelDia = horarios.filter( val => { 
-      return !this.fechasOcupadas.find( f => f.toString() === val.toString() );
+    this.turnosDisponiblesDelDia = horarios.filter( (val: any)=> { 
+      return !this.fechasOcupadas.find( f => 
+        (f.toDateString() === dia.toDateString()) && 
+        (f.getHours() === val.hora && f.getMinutes() === val.minuto) 
+      );
     })
   }
 
-  enClickHora(hora: Date){
-    this.horaSeleccionado = hora;
+  enClickHora(momento: any){
+    this.horaSeleccionado = momento;
     this.momentoTurno = this.diaSeleccionado;
-    this.momentoTurno.setHours( hora.getHours(), hora.getMinutes());
+    this.momentoTurno.setHours( momento.hora, momento.minuto);
     this.evFechaDefinida.emit( this.momentoTurno );
   }
 
@@ -64,6 +67,7 @@ export class CargaturnoComponent {
         8,
         0 + (60*i)
       );
+      arrayReturn = this.especialista.horasDeTrabajo.filter( (hr: any) => { return hr.disponible })
     }
     return arrayReturn;
   }
@@ -76,7 +80,6 @@ export class CargaturnoComponent {
     if(cambios['especialista'] && cambios['especialista'].isFirstChange() ){
       collectionData( this.ColecTurnos( this.especialista?.email) ).subscribe( resp => {
         this.fechasOcupadas = resp.map( val => {
-          console.log(val);
           return val['fecha'].toDate()} );
       })
     }

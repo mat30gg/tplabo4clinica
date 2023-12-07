@@ -1,8 +1,8 @@
 <div class="overflow-hidden vh-100">
     <div>
-        <app-navbarcomp [rolUsuario]="this.servusr.rol"></app-navbarcomp>
+        <app-navbarcomp [usuarioLog]="this.authserv.usuario"></app-navbarcomp>
     </div>
-    <div>
+    <div [@routeAnimations]="getRouteAnimationData()">
         <router-outlet></router-outlet>
     </div>
 </div>

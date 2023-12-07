@@ -3,6 +3,7 @@ import { Firestore, addDoc, collection, collectionData, doc, setDoc } from '@ang
 import { Router } from '@angular/router';
 import { Turno } from 'src/app/clases/entidades/turno';
 import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
+import { RegistrosService } from 'src/app/servicios/registros.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,7 +18,7 @@ export class PedirturnoComponent {
   public fechaElegida: Date;
   public nuevoTurno: Turno;
 
-  constructor( public usrAuth: AutenticacionService, public db: Firestore, public ruter: Router) { }
+  constructor( public usrAuth: AutenticacionService, public db: Firestore, public ruter: Router, private logserv: RegistrosService) { }
 
   enClickEspecialista(especialista: object){
     this.especialistaElegido = especialista;
@@ -44,6 +45,7 @@ export class PedirturnoComponent {
         setDoc( doc( this.db, this.getPathNTurno(this.especialistaElegido['email']) ), Object.assign({}, this.nuevoTurno) );
         setDoc( doc( this.db, this.getPathNTurno(this.usrAuth.usuario['email']) ), Object.assign({}, this.nuevoTurno));
         setDoc( doc( this.db, 'turnos/'+this.fechaElegida?.getTime().toString() ), Object.assign({}, this.nuevoTurno));
+        this.logserv.guardarRegistro('pedir_turno', {fecha: this.fechaElegida.toISOString(), especialidad: this.especialidadElegida, especialista: this.especialistaElegido.email, paciente: this.usrAuth.usuario.email})
         this.ruter.navigate(['/home']);
       }
     });

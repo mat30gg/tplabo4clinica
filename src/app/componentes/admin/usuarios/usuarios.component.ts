@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-import { collectionChanges, collectionData } from '@angular/fire/firestore';
-import { UsuariosService } from 'src/app/servicios/firestore/usuarios.service';
-import { GrupoespecialistasService } from 'src/app/servicios/grupos/grupoespecialistas.service';
-import { GrupousuariosService } from 'src/app/servicios/grupos/grupousuarios.service';
+import { Component, inject } from '@angular/core';
+import { Firestore, collection, collectionData, doc, updateDoc } from '@angular/fire/firestore';
+import { HistoriaclinicaService } from 'src/app/servicios/pdf/historiaclinica.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -10,14 +8,30 @@ import { GrupousuariosService } from 'src/app/servicios/grupos/grupousuarios.ser
   styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent {
-  public especialistas: Array<any> = [];
 
-  constructor(public dbespecialistas: GrupoespecialistasService) {
-    
-    this.especialistas = dbespecialistas.listadoEspecialistas;
+  private pdfHistoriaServ = inject( HistoriaclinicaService );
+  public especialistas: Array<any> = [];
+  public pacientes: Array<any> = [];
+
+  constructor(public db: Firestore) {
+    collectionData( collection(this.db, 'usuarios') ).subscribe( resp => {
+      console.log(resp);
+      this.especialistas = resp.filter( val => {
+        return val['datos'].tipoUsuario == 'especialista';
+      });
+      this.pacientes = resp.filter( val => {
+        return val['datos'].tipoUsuario == 'paciente';
+      })
+    })
+
   }
 
-  AlternarHabilitado(doc: any){
-    doc.aprobado = !doc.aprobado;
+  AlternarHabilitado(doctor: any){
+    doctor.accesoHabilitado = !doctor.accesoHabilitado;
+    updateDoc( doc(this.db, 'usuarios', doctor.datos.email ), doctor);
+  }
+
+  descargarHistoriaClinica( paciente: any ){
+    this.pdfHistoriaServ.crearPdfHistoriaClinica( paciente.datos );
   }
 }

@@ -1,5 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { Firestore, collection, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
 import {
   FormGroup,
   FormBuilder,
@@ -11,6 +12,8 @@ import {
   PatternValidator,
   NonNullableFormBuilder,
   FormArray,
+  ValidatorFn,
+  ValidationErrors,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Especialista } from 'src/app/clases/entidades/especialista';
@@ -31,11 +34,16 @@ import { UsuariosService } from 'src/app/servicios/firestore/usuarios.service';
   styleUrls: ['./registro.component.css'],
 })
 export class RegistroComponent {
+
+  public archivos: any = [];
   nusuario: any;
   tipoUsuario = '';
+  listadoImagenes : Array<any> = []; 
   @Input() menuAdmin: boolean = false;
 
-  formRegistro = this.fbuilder.nonNullable.group({
+  
+
+  formRegistro = this.fb.nonNullable.group({
     tipoUsuario: ['', [Validators.required]],
     nombre: ['', [
       Validators.required
@@ -68,16 +76,17 @@ export class RegistroComponent {
     obraSocial: [{value: '', disabled: true}, [
       Validators.required
     ]],
-    especialidades: this.fbuilder.array([
-    ]),
+    especialidades: this.fb.array([]),
+    direccionimagenes: ['', []],
+    recaptchaRegistro: [null, Validators.required]
   },{
     validators: [ClaveValidaciones.confirmarClaveValidacion]
   });
 
   constructor(
     public dbusuarios: UsuariosService,
-    public fbuilder: FormBuilder,
-    public guardadoImagenes: ClaseStorage,
+    public fb: FormBuilder,
+    public storage: Storage,
     public especialidadesService: EspecialidadesService,
     private ruter: Router,
     private authUsr: AutenticacionService,
@@ -90,33 +99,62 @@ export class RegistroComponent {
       if(r == 'paciente'){
         this.formRegistro.controls['obraSocial'].enable();
       }else if(r == 'especialista'){
+        this.formRegistro.addControl('especialidades', this.fb.array([]) );
         this.formRegistro.controls['especialidades'].enable();
+        this.addControlEspecialidad();
       }
     });
 
-    this.addControlEspecialidad();
+    this.formRegistro.controls['email'].valueChanges.subscribe(r => {
+      this.formRegistro.controls['direccionimagenes'].setValue( ref(storage).fullPath+'/'+r );
+    })
+
+    
   }
 
   RegistrarUsuario() {
     const colUsuarios = collection(this.db, 'usuarios');
-    let usuarioValues = this.formRegistro.value;
     if( this.formRegistro.valid) {
 
-      this.formRegistro.controls['confirmacionClave'].disable();
+      this.formRegistro.get(['confirmacionClave'])?.disable();
+      this.formRegistro.get(['recaptchaRegistro'])?.disable();
+      const usuarioValues = this.formRegistro.value;
+      
       let nDocUsuario = doc(colUsuarios, '/'+this.formRegistro.controls['email'].value);
       let nuevoUsuario = new Usuario(usuarioValues);
       let objetoUsr = {datos: Object.assign({}, nuevoUsuario), accesoHabilitado: true, emailVerificado: true};
       if(usuarioValues['tipoUsuario'] == 'paciente' ) objetoUsr.emailVerificado = false;
       setDoc(nDocUsuario, objetoUsr);
 
+      for(let i = 0; i < this.archivos.length; i++ ){
+        const arch = this.archivos[i];
+        console.log(arch);
+        if(arch){
+          const storageRef = ref(this.storage, nuevoUsuario.email+'/pfp'+i);
+          uploadBytesResumable(storageRef, arch);
+        }
+
+       }
+
       //this.authUsr.login( nuevoUsuario );
       this.ruter.navigate(['/home']);
     }
   }
 
-  subioArchivo(elementoHtml: HTMLInputElement){
-    this.guardadoImagenes.subirArchivo(elementoHtml);
-    console.log(443);
+  subioArchivo(input: HTMLInputElement){
+    if( !input.files) return
+    
+    this.archivos.push.apply( this.archivos, input.files );
+    //this.archivos.push( input.files );
+
+    console.log(this.archivos);
+ 
+    
+    let lector = new FileReader();
+    lector.readAsDataURL(this.archivos[this.archivos.length - 1]);
+    lector.onload = ( ev ) => { this.listadoImagenes.push(ev.target?.result) };
+
+    
   }
 
   getControlesEspecialidades(){
@@ -129,13 +167,10 @@ export class RegistroComponent {
   }
 
   crearControlEspecialidad(){
-    return this.fbuilder.control({
+    return this.fb.control({
       value: '',
       disabled: false
-    });
+    }, [Validators.required]);
   }
-
-  test(){
-    console.log('resolvio');
-  }
+  
 }

@@ -11,17 +11,21 @@ import { TurnosComponent } from './componentes/admin/turnos/turnos.component';
 import { CargaturnoComponent } from './componentes/productos/cargaturno/cargaturno.component';
 import { MiperfilComponent } from './componentes/visual/miperfil/miperfil.component';
 import { PedirturnoComponent } from './componentes/visual/pedirturno/pedirturno.component';
+import { PacientesComponent } from './componentes/pacientes/pacientes.component';
+import { EstadisticasComponent } from './componentes/admin/estadisticas/estadisticas.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
-  {path: 'home', component: BienvenidaComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'registro', component: RegistroComponent},
+  {path: 'home', component: BienvenidaComponent, data: { animation: 'homePage' }},
+  {path: 'login', component: LoginComponent, data: { animation: 'loginPage' }},
+  {path: 'registro', component: RegistroComponent, data: { animation: 'registro' }},
   {path: 'usuarios', component: UsuariosComponent, canActivate: [logueadoGuard], data: {rolEsperado: 'admin'}},
   {path: 'misturnos', component: MisturnosComponent, canActivate: [logueadoGuard]},
   {path: 'turnos', component: MisturnosComponent, canActivate: [logueadoGuard], data: {rolEsperado: 'admin'}},
   {path: 'solicitarturno', component: PedirturnoComponent, canActivate: [logueadoGuard]},
   {path: 'miperfil', component: MiperfilComponent, canActivate: [logueadoGuard]},
+  {path: 'mispacientes', component: PacientesComponent, canActivate: [logueadoGuard], data: {rolEsperado: 'especialista'}},
+  {path: 'estadisticas', component: EstadisticasComponent, canActivate: [], data: {rolEsperado: 'admin'}},
   {path: '**', redirectTo: 'home' }
 ]
 

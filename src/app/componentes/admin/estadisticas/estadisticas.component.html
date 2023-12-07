@@ -1,0 +1,12 @@
+<highcharts-chart
+    *ngIf="isHighcharts"
+    [Highcharts]="Highcharts"
+    [constructorType]="'chart'"
+
+    [options]="chartOptions"
+    [callbackFunction]="chartCallback"
+></highcharts-chart>
+<button class="btn " (click)="especialidadCantidad()">Especialidad cantidad</button>
+<button class="btn " (click)="turnosPorDia()">Turnos por dia</button>
+<button class="btn " (click)="especialistaTurnosEnTiempo()">Solicitudes a especialista</button>
+<button class="btn " (click)="especialistaTurnosFinalizadosEnTiempo()">Finalizacion de turnos</button>

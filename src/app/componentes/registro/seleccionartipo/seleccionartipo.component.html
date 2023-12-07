@@ -1,0 +1,23 @@
+<div class=" z-1">
+    <div class="container px-4 ">
+        <div class="row row-cols-3 ">
+            <div class="col-auto mx-auto ">
+                <boton-util clases="btn rounded-circle " elementoUtil="paciente" (clickBoton)="enClickTipo($event)">
+                    <img class="img-fluid rounded-circle" width="350px" src="assets/pacienteimagenregistro.jpg" />
+                </boton-util>
+
+            </div>
+            <div class="col-auto mx-auto">
+                <boton-util clases="btn rounded-circle " elementoUtil="especialista" (clickBoton)="enClickTipo($event)">
+                    <img class="img-fluid rounded-circle" width="350px" src="assets/especialistaimagenregistro.jpg" />
+                </boton-util>
+
+            </div>
+            <div class="col-auto mx-auto" [ngClass]="!menuAdmin?'d-none':''">
+                <boton-util clases="btn rounded-circle " elementoUtil="admin" (clickBoton)="enClickTipo($event)">
+                    <img class="img-fluid rounded-circle" width="350px" src="assets/adminimagenregistro.jpg"/>
+                </boton-util>
+            </div>
+        </div>
+    </div>
+</div>

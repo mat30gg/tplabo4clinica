@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Usuario } from '../clases/entidades/usuario';
+import { Storage, connectStorageEmulator, getBlob, getDownloadURL, getStorage,  list,  ref } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class AutenticacionService {
   public rol:string;
   public usuario:any;
 
-  constructor() { }
+  constructor( ) { }
 
   public login( usr: Usuario){
     this.logueado = true;
@@ -25,15 +26,15 @@ export class AutenticacionService {
     return this;
   }
 
-  public setAdmin(){
-    if(this.logueado) this.rol = 'admin';
-  }
+  // public setAdmin(){
+  //   if(this.logueado) this.rol = 'admin';
+  // }
 
-  public setEspecialista(){
-    if(this.logueado) this.rol = 'especialista';
-  }
+  // public setEspecialista(){
+  //   if(this.logueado) this.rol = 'especialista';
+  // }
 
-  public setPaciente(){
-    if(this.logueado) this.rol = 'paciente';
-  }
+  // public setPaciente(){
+  //   if(this.logueado) this.rol = 'paciente';
+  // }
 }
