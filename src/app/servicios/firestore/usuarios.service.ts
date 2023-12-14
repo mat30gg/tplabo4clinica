@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DocumentData, DocumentReference, Firestore, collection, collectionData, doc, query } from '@angular/fire/firestore';
-import { ClaseFirestore } from 'src/app/clases/conexion-firestore';
-
 @Injectable({
   providedIn: 'root'
 })

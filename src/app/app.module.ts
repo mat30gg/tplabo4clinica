@@ -14,7 +14,6 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage} from '@angular/fire/storage'
 import { NormalizarPipe } from './pipes/decorador/normalizar.pipe';
-import { ClaseStorage } from './clases/firestorage/clase-storage';
 import { UsuariosComponent } from './componentes/admin/usuarios/usuarios.component';
 import { BotonesLoginComponent } from './componentes/dev/botones-login/botones-login.component';
 import { MisturnosComponent } from './componentes/productos/misturnos/misturnos.component';
@@ -45,6 +44,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PopupdatosfisicosComponent } from './componentes/controles/popupdatosfisicos/popupdatosfisicos.component';
 import { PacientesComponent } from './componentes/pacientes/pacientes.component';
 import { EstadisticasComponent } from './componentes/admin/estadisticas/estadisticas.component';
+import { ColorvrDirective } from './directivas/colorvr.directive';
 
 @NgModule({
   declarations: [
@@ -81,6 +81,7 @@ import { EstadisticasComponent } from './componentes/admin/estadisticas/estadist
     PopupdatosfisicosComponent,
     PacientesComponent,
     EstadisticasComponent,
+    ColorvrDirective,
   ],
   imports: [
     BrowserModule,
@@ -97,7 +98,7 @@ import { EstadisticasComponent } from './componentes/admin/estadisticas/estadist
     RecaptchaModule,
     RecaptchaFormsModule,
   ],
-  providers: [ClaseStorage],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

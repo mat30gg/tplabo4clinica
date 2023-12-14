@@ -1,25 +1,13 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Firestore, collection, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
 import {
-  FormGroup,
   FormBuilder,
-  FormControl,
-  AbstractControl,
   Validators,
-  NgControl,
-  RequiredValidator,
-  PatternValidator,
-  NonNullableFormBuilder,
   FormArray,
-  ValidatorFn,
-  ValidationErrors,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Especialista } from 'src/app/clases/entidades/especialista';
-import { Paciente } from 'src/app/clases/entidades/paciente';
 import { Usuario } from 'src/app/clases/entidades/usuario';
-import { ClaseStorage } from 'src/app/clases/firestorage/clase-storage';
 import { ClaveValidaciones } from 'src/app/clases/validaciones/clave-validaciones';
 import { MisValidaciones } from 'src/app/clases/validaciones/mis-validaciones';
 import { AutenticacionService } from 'src/app/servicios/autenticacion.service';

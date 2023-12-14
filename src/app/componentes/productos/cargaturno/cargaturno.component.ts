@@ -1,11 +1,6 @@
 import { DatePipe, WeekDay } from '@angular/common';
 import { Component, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { CollectionReference, Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
-import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
-import { EspecialidadesService } from 'src/app/servicios/datos/especialidades.service';
-import { EspecialistasService } from 'src/app/servicios/datos/especialistas.service';
-import { ManejoturnosService } from 'src/app/servicios/firestore/manejoturnos.service';
-import { GrupoespecialistasService } from 'src/app/servicios/grupos/grupoespecialistas.service';
 
 @Component({
   selector: 'app-cargaturno',

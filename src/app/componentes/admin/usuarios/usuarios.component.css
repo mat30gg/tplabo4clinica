@@ -5,3 +5,8 @@
 .inhabilitado{
     background-color: red;
 }
+
+.cuadro-pacientes{
+    max-height: 50vh;
+    overflow: scroll;
+}

@@ -1,6 +1,3 @@
-import { ClaseFirestore } from "../conexion-firestore";
-import { Especialista } from "./especialista";
-import { Paciente } from "./paciente";
 
 export class Turno{
 

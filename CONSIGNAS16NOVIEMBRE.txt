@@ -23,3 +23,5 @@ Sección usuarios	En la sección usuarios, solamente para el perfil Administrado
 logo de la clínica, título del informe y fecha de emisión."
 Animaciones	"Se debe agregar al menos 2, como mínimo, animaciones de transición entre componentes al navegar
 la aplicación."
+
+4. En turnos filtrado por dato dinamico

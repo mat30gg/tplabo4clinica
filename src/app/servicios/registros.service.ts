@@ -22,7 +22,7 @@ export class RegistrosService {
     this.colregistros = collection( this.db, 'logs');
 
     collectionData( this.colregistros ).subscribe( resp => {
-
+      console.time('servicio registros')
       let registrosPedirTurno: Array<any> = [];
       resp.forEach( val => {
         if(val['tipo'] == "pedir_turno") {
@@ -48,7 +48,7 @@ export class RegistrosService {
 
       registrosPedirTurno.forEach( elem => {
         let fechaLog = new Date( elem['detalle']['fecha'] );
-        let indice = this.fechaCant.findIndex( val => val.dia == fechaLog.toDateString() )
+        let indice = this.fechaCant.findIndex( val => val.name == fechaLog.toDateString() )
         if( indice != -1 ){
           this.fechaCant[indice].y += 1;
         }else{
@@ -67,7 +67,7 @@ export class RegistrosService {
       registrosPedirTurno.forEach( elem => {
         let fechaLog = new Date( elem['detalle']['fecha'] );
         if( fechaLog > maniana && fechaLog <= pasadomaniana ) {
-          let indice = this.solicitudEspecialistaCant.findIndex( val => val.especialista == elem['detalle']['especialista'] );
+          let indice = this.solicitudEspecialistaCant.findIndex( val => val.name == elem['detalle']['especialista'] );
           if( indice != -1 ){
             this.solicitudEspecialistaCant[indice].y += 1;
           }else{
@@ -75,11 +75,12 @@ export class RegistrosService {
           }
         }
       })
+      console.log(registrosPedirTurno);
 
       this.finTurnoRegistros.forEach( elem => {
-        let fechaLog = new Date( elem['detalle']['fecha'] );
-        if( fechaLog > maniana && fechaLog <= pasadomaniana ) {
-          let indice = this.finEspecialistaCant.findIndex( val => val.especialista == elem['detalle']['especialista'] );
+        let fechaLog = new Date( elem['detalle']['fecha_fin'] );
+        if(  fechaLog <= pasadomaniana ) {
+          let indice = this.finEspecialistaCant.findIndex( val => val.name == elem['detalle']['especialista'] );
           if( indice != -1 ){
             this.finEspecialistaCant[indice].y += 1;
           }else{
@@ -87,6 +88,7 @@ export class RegistrosService {
           }
         }
       })
+      console.timeEnd('servicio registros');
 
     })
   }

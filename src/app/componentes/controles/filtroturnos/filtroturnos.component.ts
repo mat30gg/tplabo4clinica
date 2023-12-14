@@ -1,5 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { EspecialidadesService } from 'src/app/servicios/datos/especialidades.service';
 
 @Component({

@@ -16,7 +16,7 @@
     <div class="row ">
         <div class="col ">
             <h1>PENDIENTES</h1>
-            <div *ngFor="let turno of filtrarLista()" >
+            <div *ngFor="let turno of listadoTurnos" >
                 <div>
                     Turno: {{(turno.especialidadTurno | barrasivacio) +' '+(turno.pacienteTurno | nombreapellido | barrasivacio)+' ('+(getdate(turno.fechaTurno) | barrasivacio:true | date:'M/d/yy, h:mm a' )+') '}} <p class="h5 d-inline">{{turno.estado}}</p>
                 </div>

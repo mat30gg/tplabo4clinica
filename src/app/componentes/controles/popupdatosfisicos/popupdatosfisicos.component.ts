@@ -1,6 +1,6 @@
-import { Component, TemplateRef } from '@angular/core';
-import { AbstractControl, Form, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-popupdatosfisicos',
@@ -45,14 +45,6 @@ export class PopupdatosfisicosComponent {
   }
 
   fdf_enClickEnviarDatos(){
-    // const objDatosDinamicos: any = {};
-    // this.formDatosFisicos.get('datosDinamicos')?.value.forEach( val => {
-    //   objDatosDinamicos[val['clave']] = val['valor'];
-    // });
-    //const objDatosDinamicos = this.formDatosFisicos.get('datosDinamicos')?.value;
-    //console.log(this.formDatosFisicos.value)
-
-    //let datosDelaPersona = { ...this.formDatosFisicos.get('datosEstaticos')?.value, ...objDatosDinamicos };
 
     this.modalActivo.close( { ...this.formDatosFisicos.value, fechaEmision: new Date().toISOString() } );
   }

@@ -1,12 +1,28 @@
-<highcharts-chart
-    *ngIf="isHighcharts"
-    [Highcharts]="Highcharts"
-    [constructorType]="'chart'"
+<div class="d-flex">
+    <div class="mx-auto">
 
-    [options]="chartOptions"
-    [callbackFunction]="chartCallback"
-></highcharts-chart>
-<button class="btn " (click)="especialidadCantidad()">Especialidad cantidad</button>
-<button class="btn " (click)="turnosPorDia()">Turnos por dia</button>
-<button class="btn " (click)="especialistaTurnosEnTiempo()">Solicitudes a especialista</button>
-<button class="btn " (click)="especialistaTurnosFinalizadosEnTiempo()">Finalizacion de turnos</button>
+        <div class="">
+            <highcharts-chart
+                *ngIf="isHighcharts"
+                [Highcharts]="Highcharts"
+                [constructorType]="'chart'"
+            
+                [options]="chartOptions"
+                [callbackFunction]="chartCallback"
+            ></highcharts-chart>
+        </div>
+        <div class=" ">
+            <button class="btn " (click)="especialidadCantidad()">Especialidad cantidad</button>
+            <button class="btn " (click)="turnosPorDia()">Turnos por dia</button>
+            <button class="btn " (click)="especialistaTurnosEnTiempo()">Solicitudes a especialista</button>
+            <button class="btn " (click)="especialistaTurnosFinalizadosEnTiempo()">Finalizacion de turnos</button>
+        </div>
+    </div>
+    <div class=" mx-auto ">
+        <ul class="list-group ">
+            <li class="list-group-item" *ngFor="let registroLogin of regServ.loginRegistros">
+                <p>{{registroLogin.detalle.fecha | date:'Y/MM/dd (hh:mm:ss)'}} => {{registroLogin.detalle.usuario}}</p>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { Timestamp, addDoc, collection, doc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, Timestamp, collection, collectionData, doc, getDocs, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder } from '@angular/forms';
-import { Claseturnos } from 'src/app/clases/firestore/claseturnos';
 import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { EspecialidadesService } from 'src/app/servicios/datos/especialidades.service';
-import { TurnosespecialistasService } from 'src/app/servicios/turnos/turnosespecialistas.service';
-import { TurnospacientesService } from 'src/app/servicios/turnos/turnospacientes.service';
 
 @Component({
   selector: 'app-turnos',
@@ -20,30 +17,26 @@ export class TurnosComponent {
 
   comentariosCancelacion: any = [];
   
-  constructor( private turnosFs: TurnosespecialistasService ,public usrAutenticado: AutenticacionService, public especialidadesServ: EspecialidadesService, public fb: FormBuilder){
-    turnosFs.todosLosTurnos();
-  }
+  constructor( public usrAut: AutenticacionService, public especialidadesServ: EspecialidadesService, public fb: FormBuilder, private db: Firestore){ }
 
-  
+
   public filtros = this.fb.group({
     especialidad: ['', []],
     especialista: ['', []]
   })
 
-  filtrarLista(){
-    this.listadoTurnos = this.turnosFs.listadoTurnos;
-
-    let nomEspecialidad = this.filtros.controls.especialidad.value;
-    let nomEspecialista = this.filtros.controls.especialista.value;
-    if(nomEspecialidad) this.listadoTurnos = this.filtrarEspecialidad(this.listadoTurnos, nomEspecialidad);
-    if(nomEspecialista) this.listadoTurnos = this.filtrarEspecialista(this.listadoTurnos, nomEspecialista);
-
-    return this.listadoTurnos;
+  ngOnInit(){
+    collectionData( collection(this.db, 'turnos') ).subscribe( resp => {
+      this.listadoTurnos = resp;
+      
+      let nomEspecialidad = this.filtros.controls.especialidad.value;
+      let nomEspecialista = this.filtros.controls.especialista.value;
+      if(nomEspecialidad) this.listadoTurnos = this.filtrarEspecialidad(this.listadoTurnos, nomEspecialidad);
+      if(nomEspecialista) this.listadoTurnos = this.filtrarEspecialista(this.listadoTurnos, nomEspecialista);
+    })
   }
 
   filtrarEstado(estado: string){
-    this.listadoTurnos = this.filtrarLista();
-    
     return this.listadoTurnos.filter( turn => turn.estado === estado)
   }
 
@@ -71,6 +64,6 @@ export class TurnosComponent {
   cancelarTurno( turno: any, comentario: string) {
     turno.comentarios = comentario;
     turno.estado = 'cancelado';
-    updateDoc( doc(this.turnosFs.db, 'turnos/'+turno.idturno), turno);
+    updateDoc( doc(this.db, 'turnos/'+turno.idturno), turno);
   }
 }

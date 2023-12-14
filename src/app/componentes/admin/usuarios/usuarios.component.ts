@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { Firestore, collection, collectionData, doc, updateDoc } from '@angular/fire/firestore';
+import { Component, inject, Renderer2 } from '@angular/core';
+import { Firestore, collection, collectionData, doc, getDocs, updateDoc } from '@angular/fire/firestore';
 import { HistoriaclinicaService } from 'src/app/servicios/pdf/historiaclinica.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-usuarios',
@@ -13,9 +14,8 @@ export class UsuariosComponent {
   public especialistas: Array<any> = [];
   public pacientes: Array<any> = [];
 
-  constructor(public db: Firestore) {
+  constructor(public db: Firestore, private rend: Renderer2) {
     collectionData( collection(this.db, 'usuarios') ).subscribe( resp => {
-      console.log(resp);
       this.especialistas = resp.filter( val => {
         return val['datos'].tipoUsuario == 'especialista';
       });
@@ -33,5 +33,19 @@ export class UsuariosComponent {
 
   descargarHistoriaClinica( paciente: any ){
     this.pdfHistoriaServ.crearPdfHistoriaClinica( paciente.datos );
+  }
+
+  descargarExcel() {
+    getDocs( collection(this.db, 'usuarios') ).then( val => {
+      let datosPersonas: any[] = [];
+      val.forEach( docusuario => {
+        // const usuarioJson = JSON.stringify(docusuario.data());
+        datosPersonas.push(docusuario.data()['datos'] );
+      })
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet( datosPersonas );
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Usuarios');
+      XLSX.writeFile(wb, 'usuarios.xlsx');
+    })
   }
 }

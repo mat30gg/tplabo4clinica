@@ -1,10 +1,8 @@
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { CollectionReference, Timestamp } from '@angular/fire/firestore';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
+import { FormBuilder } from '@angular/forms';
 import { AutenticacionService } from 'src/app/servicios/autenticacion.service';
 import { EspecialidadesService } from 'src/app/servicios/datos/especialidades.service';
-import { TurnospacientesService } from 'src/app/servicios/turnos/turnospacientes.service';
 
 @Component({
   selector: 'app-turnospaciente',
@@ -16,9 +14,7 @@ export class TurnospacienteComponent {
   public filtroEspecialista = '';
   public filtroEspecialdad = '';
   
-  constructor( public turnosFs: TurnospacientesService, public usrAutenticado: AutenticacionService, public especialidadesServ: EspecialidadesService, public fb: FormBuilder){
-    turnosFs.turnosDeUsuario( usrAutenticado.usuario.email );
-  }
+  constructor( public usrAutenticado: AutenticacionService, public especialidadesServ: EspecialidadesService, public fb: FormBuilder, private db: Firestore){ }
 
   
   public filtros = this.fb.group({
@@ -26,25 +22,18 @@ export class TurnospacienteComponent {
     especialista: ['', []]
   })
 
-
-  testeo(val: any){
-    console.log(val);
-  }
-
-  filtrarLista(){
-    this.listadoTurnos = this.turnosFs.listadoTurnos;
-
-    let nomEspecialidad = this.filtros.controls.especialidad.value;
-    let nomEspecialista = this.filtros.controls.especialista.value;
-    if(nomEspecialidad) this.listadoTurnos = this.filtrarEspecialidad(this.listadoTurnos, nomEspecialidad);
-    if(nomEspecialista) this.listadoTurnos = this.filtrarEspecialista(this.listadoTurnos, nomEspecialista);
-
-    return this.listadoTurnos;
+  ngOnInit(){
+    collectionData( collection(this.db, 'turnos') ).subscribe( resp => {
+      this.listadoTurnos = resp;
+      
+      let nomEspecialidad = this.filtros.controls.especialidad.value;
+      let nomEspecialista = this.filtros.controls.especialista.value;
+      if(nomEspecialidad) this.listadoTurnos = this.filtrarEspecialidad(this.listadoTurnos, nomEspecialidad);
+      if(nomEspecialista) this.listadoTurnos = this.filtrarEspecialista(this.listadoTurnos, nomEspecialista);
+    })
   }
 
   filtrarEstado(estado: string){
-    this.listadoTurnos = this.filtrarLista();
-    
     return this.listadoTurnos.filter( turn => turn.estado === estado)
   }
 

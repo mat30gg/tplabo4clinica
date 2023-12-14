@@ -1,21 +1,21 @@
 <div class=" z-1">
     <div class="container px-4 ">
-        <div class="row row-cols-3 ">
-            <div class="col-auto mx-auto ">
-                <boton-util clases="btn rounded-circle " elementoUtil="paciente" (clickBoton)="enClickTipo($event)">
-                    <img class="img-fluid rounded-circle" width="350px" src="assets/pacienteimagenregistro.jpg" />
+        <div class=" d-flex justify-content-evenly my-5 ">
+            <div class="  ">
+                <boton-util clases="btn rounded-circle" elementoUtil="paciente" (clickBoton)="enClickTipo($event)">
+                    <img class="img-fluid rounded-circle"  src="assets/pacienteimagenregistro.jpg" />
                 </boton-util>
 
             </div>
-            <div class="col-auto mx-auto">
-                <boton-util clases="btn rounded-circle " elementoUtil="especialista" (clickBoton)="enClickTipo($event)">
-                    <img class="img-fluid rounded-circle" width="350px" src="assets/especialistaimagenregistro.jpg" />
+            <div class=" ">
+                <boton-util clases="btn rounded-circle" elementoUtil="especialista" (clickBoton)="enClickTipo($event)">
+                    <img class="img-fluid rounded-circle"  src="assets/especialistaimagenregistro.jpg" />
                 </boton-util>
 
             </div>
-            <div class="col-auto mx-auto" [ngClass]="!menuAdmin?'d-none':''">
+            <div class="" [ngClass]="!menuAdmin?'d-none':''">
                 <boton-util clases="btn rounded-circle " elementoUtil="admin" (clickBoton)="enClickTipo($event)">
-                    <img class="img-fluid rounded-circle" width="350px" src="assets/adminimagenregistro.jpg"/>
+                    <img class="img-fluid rounded-circle"  src="assets/adminimagenregistro.jpg"/>
                 </boton-util>
             </div>
         </div>
